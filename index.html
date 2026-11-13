@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRN SMART CODING UP SKILLS | โรงเรียนมหาไถ่ศึกษาภาคตะวันออกเฉียงเหนือ</title>
+    <link rel="icon" type="image/jpeg" href="https://yt3.googleusercontent.com/BFbVKyC_p3RToa_4YLWgjydWozCp9k-DA6z7hz_rrx5PkAWypLK6P7Lx5DxFdruIQM5ms9hkRw=s900-c-k-c0x00ffffff-no-rj">
+    <script src="https://cdn.tailwindcss.com"></script>
+   <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Mali', sans-serif; background-color: #f8fafc; }
+
+        /* เพิ่มลวดลายการ์ตูน Coding / Tech Doodle น่ารัก ๆ เป็นพื้นหลัง */
+        body { 
+            font-family: 'Mali', cursive, sans-serif; 
+            background-color: #f0f7ff; 
+            background-image: radial-gradient(#d1e7ff 1.5px, transparent 1.5px), radial-gradient(#ffe4e6 1.5px, #f0f7ff 1.5px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+
+        /* ตกแต่ง Pattern การ์ตูนน่ารักแผ่วๆ */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            opacity: 0.08;
+            pointer-events: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text y="30" x="10" font-size="22">🤖</text><text y="40" x="60" font-size="20">💻</text><text y="85" x="25" font-size="18">🚀</text><text y="80" x="75" font-size="20">✨</text><text y="35" x="40" font-size="15">&lt;/&gt;</text></svg>');
+            background-size: 180px 180px;
+        }
+
+        /* แอนิเมชันสำหรับหุ่นยนต์วิ่ง */
+        @keyframes robotWalk {
+            0% { transform: translateX(-100px) scaleX(1); }
+            45% { transform: translateX(calc(100vw + 100px)) scaleX(1); }
+            50% { transform: translateX(calc(100vw + 100px)) scaleX(-1); }
+            95% { transform: translateX(-100px) scaleX(-1); }
+            100% { transform: translateX(-100px) scaleX(1); }
+        }
+        
+        @keyframes robotBounce {
+            0%, 100% { margin-bottom: 0px; }
+            50% { margin-bottom: 8px; }
+        }
+
+        .running-robot {
+            animation: robotWalk 28s linear infinite, robotBounce 0.6s ease-in-out infinite;
+        }
+
+        /* กล่องคำพูดหุ่นยนต์ */
+        .speech-bubble {
+            animation: bubbleFade 4s ease-in-out forwards;
+        }
+
+        @keyframes bubbleFade {
+            0%, 10% { opacity: 0; transform: translateY(10px) scale(0.9); }
+            15%, 85% { opacity: 1; transform: translateY(0) scale(1); }
+            95%, 100% { opacity: 0; transform: translateY(-10px) scale(0.9); }
+        }
+
+        .code-font { font-family: 'Fira Code', monospace; }
+        .hrn-red { background-color: #8B0000; }
+        .hrn-red-gradient { background: linear-gradient(135deg, #8B0000 0%, #B22222 100%); }
+        .hrn-gold { color: #D4AF37; }
+        .hrn-gold-bg { background-color: #D4AF37; }
+        .block-item { transition: all 0.2s ease; cursor: pointer; user-select: none; }
+        .block-item:hover { transform: translateX(4px); filter: brightness(1.05); }
+        .workspace-block { animation: popIn 0.2s ease-out; }
+        @keyframes popIn {
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .emoji-locked { filter: grayscale(100%); opacity: 0.32; transition: all 0.3s ease; }
+        .emoji-unlocked { filter: grayscale(0%); opacity: 1; transform: scale(1.05); transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        
+        /* 1. ลูกเล่นเมาส์วาง (Cute Hover Effects) */
+        button, .block-item, .workspace-block {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease !important;
+        }
+        button:hover:not(:disabled), .block-item:hover {
+            transform: translateY(-2.5px) scale(1.03);
+        }
+        button:active:not(:disabled), .block-item:active {
+            transform: scale(0.95);
+        }
+
+        /* การ์ดหน้าแรกเด้งนุ่มๆ เมื่อเอาเมาส์วาง */
+        #landingView .bg-white.rounded-2xl {
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+        }
+        #landingView .bg-white.rounded-2xl:hover {
+            transform: translateY(-6px);
+        }
+
+        /* 2. ลูกเล่นตอนคลิก (Click Particle Burst) */
+        .click-sparkle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 16px;
+            user-select: none;
+            animation: sparkleFly 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes sparkleFly {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.2) rotate(var(--rot));
+            }
+        }
+
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col">
+
+    <!-- ==================== NAVBAR ==================== -->
+    <header class="hrn-red-gradient text-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+            <!-- ฝั่งซ้าย: ตราโรงเรียน + ชื่อระบบ -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('landing')">
+                <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-md border-2 border-[#D4AF37] overflow-hidden shrink-0 p-0.5">
+                    <img src="https://yt3.googleusercontent.com/BFbVKyC_p3RToa_4YLWgjydWozCp9k-DA6z7hz_rrx5PkAWypLK6P7Lx5DxFdruIQM5ms9hkRw=s900-c-k-c0x00ffffff-no-rj"
+                         alt="ตราโรงเรียนมหาไถ่ศึกษาภาคตะวันออกเฉียงเหนือ"
+                         class="w-full h-full object-contain rounded-full"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="hidden w-full h-full items-center justify-center text-[#8B0000] font-bold text-xl">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg md:text-xl tracking-wide leading-tight">
+                        HRN <span class="text-[#FDE047]">SMART CODING</span> UP SKILLS
+                    </h1>
+                    <p class="text-xs text-red-100">โรงเรียนมหาไถ่ศึกษาภาคตะวันออกเฉียงเหนือ | ไต่ระดับภารกิจ พิชิตการคิดเชิงคำนวณ</p>
+                </div>
+            </div>
+
+            <!-- ฝั่งขวา: สถานะผู้ใช้ & ปุ่มเชื่อมต่อ Sheets -->
+            <div class="flex items-center gap-2 md:gap-4">
+                <div id="userBadge" class="hidden bg-black/25 px-3 py-1.5 rounded-full text-xs md:text-sm flex items-center gap-2 border border-white/20">
+                    <i class="fa-solid fa-user-graduate text-[#FDE047]"></i>
+                    <span id="userDisplayName">ผู้เยี่ยมชม</span>
+                    <span id="userXPBadge" class="bg-[#D4AF37] text-slate-900 font-bold px-2 py-0.5 rounded-full text-xs">0 XP</span>
+                </div>
+                <button onclick="openConfigModal()" title="ตั้งค่าเชื่อมต่อ Google Sheets" class="bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg text-xs md:text-sm flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-cloud-arrow-up text-[#FDE047]"></i>
+                    <span class="hidden sm:inline" id="syncStatusText">เชื่อมต่อ Sheets</span>
+                </button>
+                <button id="logoutBtn" onclick="logout()" class="hidden bg-red-950 hover:bg-black text-white px-3 py-1.5 rounded-lg text-xs md:text-sm transition">
+                    <i class="fa-solid fa-right-from-bracket"></i> ออก
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== MAIN CONTENT AREA ==================== -->
+    <main class="flex-grow">
+
+        <!-- 1. LANDING PAGE VIEW -->
+        <section id="landingView" class="max-w-7xl mx-auto px-4 py-8 md:py-12">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="inline-block bg-red-100 text-[#8B0000] font-semibold px-4 py-1 rounded-full text-xs md:text-sm mb-3 border border-red-200">
+                    🏆 นวัตกรรมการจัดการเรียนรู้ วิชา วิทยาการคำนวณ ม.1
+                </span>
+            <h2 class="text-2xl md:text-4xl font-bold text-slate-900 mt-2 mb-3 leading-relaxed">
+                ระบบนิเวศการเรียนรู้โค้ดดิ้งอัจฉริยะ
+            </h2>
+                <p class="text-slate-600 text-sm md:text-base">
+                    เรียนรู้การเขียนโปรแกรมผ่าน <b>ภารกิจไต่ระดับ (Tiered Missions)</b> ฝึกต่อบล็อกพร้อมแปลงเป็นโค้ด <b>Python แบบเรียลไทม์</b> และซ่อมเสริมจุดพลาดด้วยตนเองผ่าน <b>คลินิกแก้โค้ด (Smart Coding Clinic)</b>
+                </p>
+            </div>
+
+            <!-- 3 Portal Cards -->
+            
+<!-- 3 Portal Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <!-- 1. Student Card (Login & Register Tabs) -->
+                <div class="bg-white rounded-2xl shadow-md border-t-4 border-[#8B0000] p-6 flex flex-col justify-between hover:shadow-xl transition">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-12 h-12 rounded-2xl bg-red-50 text-[#8B0000] flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-user-graduate"></i>
+                            </div>
+                            <!-- Tab Switcher -->
+                            <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-semibold">
+                                <button id="tabStudentLogin" onclick="switchStudentAuthTab('login')" class="px-3 py-1.5 rounded-lg bg-[#8B0000] text-white shadow-sm transition">เข้าสู่ระบบ</button>
+                                <button id="tabStudentRegister" onclick="switchStudentAuthTab('register')" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">สมัครใหม่</button>
+                            </div>
+                        </div>
+
+                        <h3 class="text-xl font-bold text-slate-800 mb-1">สำหรับนักเรียน (Student)</h3>
+
+                        <!-- ฟอร์มเข้าสู่ระบบ (Login Form) -->
+                        <div id="studentLoginForm" class="space-y-3 mt-3">
+                            <p class="text-xs text-slate-500">กรอกรหัสนักเรียนและรหัสผ่านที่ลงทะเบียนไว้เพื่อเข้าเรียนต่อ</p>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">รหัสนักเรียน</label>
+                                <input type="text" id="loginStudentId" placeholder="เช่น 10101" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-[#8B0000]">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">รหัสผ่าน (PIN 4 หลัก)</label>
+                                <input type="password" id="loginStudentPin" maxlength="6" placeholder="รหัสผ่านที่ตั้งไว้" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-[#8B0000]">
+                            </div>
+                            <button onclick="handleStudentLogin()" class="w-full hrn-red-gradient hover:opacity-95 text-white font-semibold py-2.5 rounded-xl shadow transition flex items-center justify-center gap-2 mt-2">
+                                <span>เข้าสู่ห้องเรียนโค้ดดิ้ง</span> <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- ฟอร์มสมัครสมาชิกใหม่ (Register Form) -->
+                        <div id="studentRegisterForm" class="hidden space-y-2.5 mt-3">
+                            <p class="text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-200">
+                                <i class="fa-solid fa-sparkles mr-1"></i> ลงทะเบียนครั้งแรกเพื่อสร้างโปรไฟล์และสะสม XP
+                            </p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-[11px] font-semibold text-slate-700 block mb-0.5">****</label>
+                                    <input type="text" id="regStudentId" placeholder="เช่น 10105" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-[#8B0000]">
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-semibold text-slate-700 block mb-0.5">****</label>
+                                    <input type="password" id="regStudentPin" maxlength="6" placeholder="เลข 4 หลัก" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-[#8B0000]">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-semibold text-slate-700 block mb-0.5">ชื่อ-นามสกุล (ใส่คำนำหน้า) *</label>
+                                <input type="text" id="regStudentName" placeholder="เช่น ด.ช.กรกช ใจดี" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-[#8B0000]">
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-[11px] font-semibold text-slate-700 block mb-0.5">ห้องเรียน *</label>
+                                    <select id="regStudentRoom" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-[#8B0000]">
+                                        <option value="ม.1/1">ชั้น ม.1/1</option>
+                                        <option value="ม.1/2">ชั้น ม.1/2</option>
+                                        <option value="ม.1/3">ชั้น ม.1/3</option>
+                                        <option value="ม.1/4">ชั้น ม.1/4</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-semibold text-slate-700 block mb-0.5">เลขที่ *</label>
+                                    <input type="number" id="regStudentNo" min="1" max="60" placeholder="เช่น 15" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-[#8B0000]">
+                                </div>
+                            </div>
+                            <button onclick="handleStudentRegister()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-xl shadow transition flex items-center justify-center gap-2 mt-1">
+                                <i class="fa-solid fa-user-plus"></i> <span>ยืนยันการสมัครใช้งาน</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Teacher Card -->
+                <div class="bg-white rounded-2xl shadow-md border-t-4 border-[#D4AF37] p-6 flex flex-col justify-between hover:shadow-xl transition">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl mb-4">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">สำหรับครูผู้สอน (Teacher)</h3>
+                        <p class="text-sm text-slate-600 mb-4">แดชบอร์ดติดตามพัฒนาการนักเรียนทั้ง 135 คนแบบเรียลไทม์ ดูแจ้งเตือนคลินิกแก้โค้ด และส่งออกคะแนน</p>
+                        <div class="space-y-2 mb-4">
+                            <input type="password" id="teacherPinInput" placeholder="****" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-amber-500">
+                            <div class="bg-amber-50/70 p-2.5 rounded-lg text-xs text-amber-800 border border-amber-200">
+                                <i class="fa-solid fa-circle-info mr-1"></i> <b>ผู้ดูแลระบบ:</b> นางสาวกัญณภัทร ใจเพียร 
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="loginTeacher()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-xl shadow transition flex items-center justify-center gap-2">
+                        <span>เปิด Teacher Dashboard</span> <i class="fa-solid fa-lock-open text-[#D4AF37]"></i>
+                    </button>
+                </div>
+
+                <!-- 3. Guest / Committee Demo Card -->
+                <div class="bg-white rounded-2xl shadow-md border-t-4 border-emerald-600 p-6 flex flex-col justify-between hover:shadow-xl transition">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">โหมดทดลองระบบ (Demo)</h3>
+                        <p class="text-sm text-slate-600 mb-4">สำหรับคณะกรรมการประกวดนวัตกรรมและผู้เยี่ยมชม ทดลองต่อบล็อกแปลงโค้ด Python และทดสอบคลินิกแก้โค้ดได้ทันทีโดยไม่ต้องลงทะเบียน</p>
+                        <ul class="text-xs text-slate-600 space-y-1.5 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i> ปลดล็อกทุกภารกิจ (Bronze / Silver / Gold)</li>
+                            <li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i> ทดลองระบบ Auto-Check & Hint Cards</li>
+                            <li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i> ทรัพยากรการศึกษาแบบเปิด (OER)</li>
+                        </ul>
+                    </div>
+                    <button onclick="loginGuest()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-xl shadow transition flex items-center justify-center gap-2">
+                        <span>ทดลองใช้งานทันที</span> <i class="fa-solid fa-play"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ecosystem Summary & OER Footer -->
+           <!-- Bottom Info & OER Banner -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-6 flex flex-wrap justify-between items-center gap-6">
+                <div class="flex flex-wrap items-center gap-6 md:gap-8">
+                    <div>
+                        <div class="text-xs text-slate-500 mb-1.5 tracking-wide">กลุ่มเป้าหมายนำร่อง</div>
+                        <div class="font-bold text-base md:text-lg text-[#8B0000] tracking-wide">นักเรียนชั้นมัธยมศึกษาปีที่ 1</div>
+                    </div>
+                    <div class="hidden sm:block h-10 w-px bg-slate-200"></div>
+                    <div>
+                        <div class="text-xs text-slate-500 mb-1.5 tracking-wide">ทักษะการคิดเชิงคำนวณ</div>
+                        <div class="font-bold text-base md:text-lg text-slate-800 tracking-wide">4 องค์ประกอบหลัก</div>
+                    </div>
+                    <div class="hidden sm:block h-10 w-px bg-slate-200"></div>
+                    <div>
+                        <div class="text-xs text-slate-500 mb-1.5 tracking-wide">สถานะฐานข้อมูล</div>
+                        <div id="landingDbBadge" class="font-bold text-sm md:text-base text-emerald-600 tracking-wide">ออนไลน์ (Google Sheets Sync)</div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3.5 bg-slate-50 px-4 py-3 rounded-xl border border-slate-200">
+                    <i class="fa-brands fa-creative-commons text-2xl text-slate-600 shrink-0"></i>
+                    <div class="leading-relaxed">
+                        <div class="font-bold text-xs md:text-sm text-slate-800 tracking-wide mb-0.5">Open Educational Resources (OER)</div>
+                        <div class="text-xs text-slate-500 tracking-wide">สัญญาอนุญาต CC BY-NC-SA 4.0 • ใช้ฟรีทั่วประเทศ</div>
+                    </div>
+                </div>
+            </div> 
+        </section>
+
+        <!-- 2. STUDENT PORTAL & CODING STUDIO VIEW -->
+        <section id="studentView" class="hidden max-w-7xl mx-auto px-4 py-5">
+            <!-- Mission Selector & Emoji Collection Bar -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-4 space-y-4">
+                <!-- แถบสะสมอิโมจิ (Emoji Collection) -->
+                <div class="bg-gradient-to-r from-amber-50 via-red-50/40 to-amber-50 rounded-xl p-3 border border-amber-200/80">
+                    <div class="flex flex-wrap justify-between items-center gap-2 mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">🎒</span>
+                            <h3 class="font-bold text-xs md:text-sm text-slate-800">สมุดสะสมอิโมจิพิชิตภารกิจ (Emoji Collection)</h3>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="emojiProgressText" class="text-xs font-bold text-[#8B0000] bg-white px-3 py-1 rounded-full border border-red-200 shadow-sm">
+                                สะสมแล้ว 0 / 100 ตัว
+                            </span>
+                            <button onclick="toggleEmojiDrawer()" id="toggleEmojiBtn" class="text-xs bg-slate-800 hover:bg-slate-700 text-white px-2.5 py-1 rounded-lg transition">
+                                ย่อ/ขยาย
+                            </button>
+                        </div>
+                    </div>
+                    <div id="emojiCollectionGrid" class="grid grid-cols-10 sm:grid-cols-15 md:grid-cols-20 gap-1.5 max-h-40 overflow-y-auto p-1.5 bg-white/80 rounded-lg border border-amber-100">
+                        <!-- อิโมจิ 100 ตัวจะถูกสร้างอัตโนมัติที่นี่ -->
+                    </div>
+                </div>
+
+                <!-- แถบเลือกภารกิจ 100 ด่าน -->
+                <div>
+                    <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
+                        <h2 class="font-bold text-sm md:text-base text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-layer-group text-[#8B0000]"></i> เลือกภารกิจไต่ระดับ (100 Missions)
+                        </h2>
+                        <div class="flex flex-wrap gap-1.5 text-xs font-semibold">
+                            <button onclick="filterMissionTier('BRONZE')" id="filterBtnBRONZE" class="px-3 py-1 rounded-full bg-amber-600 text-white shadow-sm transition">🥉 Bronze (40)</button>
+                            <button onclick="filterMissionTier('SILVER')" id="filterBtnSILVER" class="px-3 py-1 rounded-full bg-slate-200 text-slate-700 hover:bg-slate-300 transition">🥈 Silver (35)</button>
+                            <button onclick="filterMissionTier('GOLD')" id="filterBtnGOLD" class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 hover:bg-yellow-200 transition">🏆 Gold (25)</button>
+                        </div>
+                    </div>
+                    <div id="missionListContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 max-h-44 overflow-y-auto pr-1">
+                        <!-- รายการภารกิจถูกสร้างโดย JS -->
+                    </div>
+                </div>
+            </div>
+                </div>
+                <div id="missionListContainer" class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <!-- Missions injected by JS -->
+                </div>
+            </div>
+
+            <!-- Active Mission Header & Storyboard -->
+            <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-xl p-4 mb-4 shadow flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span id="activeMissionTierBadge" class="px-2.5 py-0.5 rounded text-xs font-bold bg-amber-600 text-white">BRONZE</span>
+                        <span id="activeMissionCTTag" class="text-xs text-slate-300 bg-white/10 px-2 py-0.5 rounded">ทักษะ: Decomposition (การแยกย่อยปัญหา)</span>
+                    </div>
+                    <h3 id="activeMissionTitle" class="font-bold text-lg text-[#FDE047]">ภารกิจที่ 1: ก้าวแรกของหุ่นยนต์สำรวจ</h3>
+                    <p id="activeMissionDesc" class="text-sm text-slate-200 mt-0.5">คำชี้แจง: จงต่อบล็อกคำสั่งให้หุ่นยนต์เดินไปข้างหน้า 3 ครั้ง แล้วส่งเสียงทักทาย "Hello HRN"</p>
+                </div>
+                <div class="flex gap-2 shrink-0">
+                    <button onclick="openStoryboardModal()" class="bg-white/15 hover:bg-white/25 text-white px-3.5 py-2 rounded-lg text-xs md:text-sm font-medium flex items-center gap-1.5 border border-white/20 transition">
+                        <i class="fa-solid fa-pen-ruler text-[#FDE047]"></i> วางแผน Storyboard
+                    </button>
+                    <button onclick="openClinicModal('manual')" class="bg-rose-600 hover:bg-rose-700 text-white px-3.5 py-2 rounded-lg text-xs md:text-sm font-medium flex items-center gap-1.5 shadow transition">
+                        <i class="fa-solid fa-kit-medical"></i> คลินิกแก้โค้ด
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3-Pane Coding Studio -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                
+                <!-- Left Pane: Block Toolbox (3 cols) -->
+                <div class="lg:col-span-3 bg-white rounded-xl shadow-sm border border-slate-200 p-3 flex flex-col">
+                    <h4 class="font-bold text-sm text-slate-700 pb-2 mb-2 border-b flex items-center justify-between">
+                        <span><i class="fa-solid fa-cubes text-[#8B0000] mr-1.5"></i> กล่องบล็อกคำสั่ง</span>
+                        <span class="text-[11px] font-normal text-slate-400">คลิกเพื่อเพิ่ม</span>
+                    </h4>
+                    <div id="toolboxContainer" class="space-y-2 overflow-y-auto max-h-[430px] pr-1">
+                        <!-- Blocks injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Middle Pane: Workspace (5 cols) -->
+                <div class="lg:col-span-5 bg-white rounded-xl shadow-sm border border-slate-200 p-3 flex flex-col">
+                    <div class="flex justify-between items-center pb-2 mb-2 border-b">
+                        <h4 class="font-bold text-sm text-slate-700">
+                            <i class="fa-solid fa-puzzle-piece text-amber-500 mr-1.5"></i> พื้นที่ต่อบล็อก (Workspace)
+                        </h4>
+                        <button onclick="clearWorkspace()" class="text-xs text-rose-600 hover:underline flex items-center gap-1">
+                            <i class="fa-solid fa-trash-can"></i> ล้างทั้งหมด
+                        </button>
+                    </div>
+
+                    <!-- Workspace Canvas -->
+                    <div id="workspaceContainer" class="flex-grow bg-slate-50 rounded-lg border-2 border-dashed border-slate-300 p-3 min-h-[340px] max-h-[380px] overflow-y-auto space-y-2">
+                        <div class="bg-emerald-600 text-white px-3 py-2 rounded-lg text-xs font-semibold shadow-sm flex items-center gap-2">
+                            <i class="fa-solid fa-flag"></i> เมื่อเริ่มต้นโปรแกรม (Start)
+                        </div>
+                        <div id="userBlocksList" class="space-y-2 pl-3 border-l-2 border-emerald-400">
+                            <!-- Dropped blocks appear here -->
+                        </div>
+                        <div id="emptyWorkspaceHint" class="text-center py-10 text-slate-400 text-xs">
+                            <i class="fa-solid fa-hand-pointer text-2xl mb-2 block"></i>
+                            คลิกเลือกบล็อกคำสั่งจากกล่องด้านซ้ายเพื่อเริ่มสร้างอัลกอริทึม
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 gap-2 mt-3">
+                        <button onclick="runSimulation()" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2.5 rounded-lg text-sm flex items-center justify-center gap-2 transition">
+                            <i class="fa-solid fa-play text-emerald-400"></i> ทดสอบรันโค้ด
+                        </button>
+                        <button onclick="checkMissionSolution()" class="hrn-red-gradient hover:opacity-95 text-white font-semibold py-2.5 rounded-lg text-sm flex items-center justify-center gap-2 shadow transition">
+                            <i class="fa-solid fa-circle-check text-[#FDE047]"></i> ส่งตรวจภารกิจ
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Pane: Real-Time Python & Output Stage (4 cols) -->
+                <div class="lg:col-span-4 flex flex-col gap-4">
+                    <!-- Real-Time Python Code Box -->
+                    <div class="bg-slate-900 text-slate-100 rounded-xl shadow-sm p-3 flex flex-col">
+                        <div class="flex justify-between items-center pb-2 mb-2 border-b border-slate-700">
+                            <span class="text-xs font-bold text-[#FDE047] flex items-center gap-1.5">
+                                <i class="fa-brands fa-python text-base"></i> Real-Time Python Code
+                            </span>
+                            <div class="flex gap-1 bg-slate-800 p-0.5 rounded text-[11px]">
+                                <button id="tabPythonBtn" onclick="switchCodeTab('python')" class="px-2 py-0.5 rounded bg-slate-700 text-white font-medium">Python</button>
+                                <button id="tabPseudoBtn" onclick="switchCodeTab('pseudo')" class="px-2 py-0.5 rounded text-slate-400 hover:text-white">Pseudocode</button>
+                            </div>
+                        </div>
+                        <pre id="codeOutputDisplay" class="code-font text-xs text-emerald-400 overflow-x-auto min-h-[160px] max-h-[190px] leading-relaxed"># รอการต่อบล็อกคำสั่ง...
+def main():
+    pass</pre>
+                    </div>
+
+                    <!-- Simulation Console / Output -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-3 flex-grow flex flex-col">
+                        <h4 class="font-bold text-xs text-slate-700 pb-2 mb-2 border-b flex items-center justify-between">
+                            <span><i class="fa-solid fa-terminal text-indigo-600 mr-1.5"></i> หน้าต่างแสดงผลลัพธ์ (Output Stage)</span>
+                            <span id="simStatusBadge" class="text-[11px] text-slate-400">พร้อมทำงาน</span>
+                        </h4>
+                        <div id="consoleOutput" class="bg-slate-50 rounded-lg border border-slate-200 p-3 flex-grow font-mono text-xs text-slate-700 min-h-[130px] max-h-[160px] overflow-y-auto space-y-1">
+                            <span class="text-slate-400">กดปุ่ม "ทดสอบรันโค้ด" เพื่อดูผลลัพธ์การทำงาน...</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 3. TEACHER ANALYTICS DASHBOARD VIEW -->
+        <section id="teacherView" class="hidden max-w-7xl mx-auto px-4 py-6">
+            <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Teacher Analytics Dashboard</h2>
+                    <p class="text-sm text-slate-600">ติดตามพัฒนาการคิดเชิงคำนวณและแจ้งเตือนคลินิกแก้โค้ด (ชั้นมัธยมศึกษาปีที่ 1)</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="clearAllStudentsData()" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-2 rounded-lg text-xs md:text-sm font-semibold shadow-sm flex items-center gap-1.5 transition" title="ล้างรายชื่อและประวัติทั้งหมดทั้งในเว็บและ Google Sheets">
+                            <i class="fa-solid fa-broom"></i> <span>ล้างข้อมูลทั้งหมด</span>
+                        </button>
+                    <button onclick="exportToCSV()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-xs md:text-sm font-semibold shadow flex items-center gap-2 transition">
+                        <i class="fa-solid fa-file-csv"></i> <span>ส่งออก CSV</span>
+                    </button>
+                    <button onclick="exportToPDF()" class="hrn-red-gradient hover:opacity-95 text-white px-4 py-2 rounded-xl text-xs md:text-sm font-semibold shadow flex items-center gap-2 transition">
+                        <i class="fa-solid fa-file-pdf"></i> <span>ส่งออกรายงาน PDF</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- KPI Summary Cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-[#8B0000]">
+                    <span class="text-xs text-slate-500">นักเรียนที่บันทึกในระบบ</span>
+                    <div class="text-2xl font-bold text-slate-800 mt-1"><span id="kpiTotalStudents">0</span> <span class="text-xs font-normal text-slate-400">/ 135 คน</span></div>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-emerald-500">
+                    <span class="text-xs text-slate-500">อัตราการผ่านภารกิจเฉลี่ย</span>
+                    <div class="text-2xl font-bold text-emerald-600 mt-1" id="kpiPassRate">0%</div>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-[#D4AF37]">
+                    <span class="text-xs text-slate-500">ผู้พิชิตระดับ Gold</span>
+                    <div class="text-2xl font-bold text-amber-600 mt-1" id="kpiGoldCount">0 คน</div>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-rose-500">
+                    <span class="text-xs text-slate-500">แจ้งเตือนคลินิกแก้โค้ด (Needs Help)</span>
+                    <div class="text-2xl font-bold text-rose-600 mt-1" id="kpiClinicAlerts">0 คน</div>
+                </div>
+            </div>
+
+        <!-- Student Progress Table -->
+            
+    <!-- Student Tracking & Management Table -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-4 border-b border-slate-200 flex flex-wrap justify-between items-center gap-3 bg-slate-50">
+                    <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-users-gear text-[#8B0000]"></i> จัดการข้อมูลและติดตามพัฒนาการนักเรียน
+                    </h3>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <!-- ช่องค้นหาชื่อหรือรหัสนักเรียน -->
+                        <div class="relative">
+                            <i class="fa-solid fa-magnifying-glass text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 text-xs"></i>
+                            <input type="text" id="teacherSearchInput" oninput="renderTeacherTable()" placeholder="ค้นหาชื่อ หรือ รหัสนักเรียน..." class="pl-8 pr-3 py-2 border border-slate-300 rounded-lg text-xs md:text-sm focus:outline-none focus:border-[#8B0000] w-52 md:w-64">
+                        </div>
+                        <select id="filterRoomSelect" onchange="renderTeacherTable()" class="px-3 py-2 border border-slate-300 rounded-lg text-xs md:text-sm focus:outline-none focus:border-[#8B0000]">
+                            <option value="ALL">ทุกห้องเรียน (ม.1/1 - ม.1/4)</option>
+                            <option value="ม.1/1">ชั้น ม.1/1</option>
+                            <option value="ม.1/2">ชั้น ม.1/2</option>
+                            <option value="ม.1/3">ชั้น ม.1/3</option>
+                            <option value="ม.1/4">ชั้น ม.1/4</option>
+                        </select>
+                        <button onclick="openStudentFormModal()" class="bg-[#8B0000] hover:bg-red-900 text-white px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold shadow-sm flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-user-plus"></i> <span>เพิ่มนักเรียน</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-600 text-xs uppercase border-b border-slate-200">
+                                <th class="py-3 px-3">รหัส</th>
+                                <th class="py-3 px-3">เลขที่</th>
+                                <th class="py-3 px-3">ชื่อ - นามสกุล</th>
+                                <th class="py-3 px-3">ห้อง</th>
+                                <th class="py-3 px-3">รหัสผ่าน (PIN)</th>
+                                <th class="py-3 px-3">ระดับ / ด่าน</th>
+                                <th class="py-3 px-3">สถานะคลินิก</th>
+                                <th class="py-3 px-3 text-center">จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teacherTableBody" class="divide-y divide-slate-100 text-sm">
+                            <!-- แถวข้อมูลถูกสร้างโดย JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>         
+        </section>
+
+    </main>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- 1. SMART CODING CLINIC MODAL -->
+    <div id="clinicModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden animate-[popIn_0.2s_ease-out]">
+            <div class="bg-rose-700 text-white px-5 py-4 flex justify-between items-center">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-full bg-white text-rose-700 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-stethoscope"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base">Smart Coding Clinic (คลินิกแก้โค้ด)</h3>
+                        <p class="text-xs text-rose-100">วิเคราะห์จุดพลาดด้วยตนเองผ่าน Hint Cards และ PDCA Log</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('clinicModal')" class="text-white/80 hover:text-white text-xl">&times;</button>
+            </div>
+
+            <div class="p-5 space-y-4 max-h-[80vh] overflow-y-auto">
+                <!-- Diagnosis Message -->
+                <div id="clinicDiagnosisBox" class="bg-rose-50 border border-rose-200 rounded-xl p-3 text-xs md:text-sm text-rose-900">
+                    <strong><i class="fa-solid fa-triangle-exclamation mr-1"></i> ผลการวินิจฉัยเบื้องต้น:</strong>
+                    <span id="clinicDiagnosisText">โค้ดยังไม่ตรงตามเงื่อนไขของภารกิจ ลองเปิดบัตรคำใบ้ทีละใบเพื่อหาจุดแก้ไขนะคะ!</span>
+                </div>
+
+                <!-- Progressive Hint Cards -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-bold text-xs text-slate-700 uppercase tracking-wider">บัตรคำใบ้เสริมพลังการคิด (Hint Cards)</span>
+                        <span id="hintCounterBadge" class="text-xs text-amber-700 font-semibold">เปิดแล้ว 0/3 ใบ</span>
+                    </div>
+                    <div class="space-y-2" id="hintCardsContainer">
+                        <!-- Hints injected by JS -->
+                    </div>
+                </div>
+
+                <!-- PDCA Log Form -->
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2.5">
+                    <h4 class="font-bold text-xs text-slate-800 flex items-center gap-1.5">
+                        <i class="fa-solid fa-clipboard-check text-[#8B0000]"></i> บันทึกการซ่อมโค้ด (PDCA Log)
+                    </h4>
+                    <div>
+                        <label class="block text-xs text-slate-600 mb-1">1. Check (สาเหตุที่โค้ดทำงานไม่ถูกต้องคืออะไร?)</label>
+                        <select id="pdcaCheckInput" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+                            <option value="ลำดับขั้นตอนคำสั่งสลับกัน">ลำดับขั้นตอนคำสั่งสลับกัน (Sequence Error)</option>
+                            <option value="ลืมใช้บล็อกวนซ้ำหรือเงื่อนไข">ลืมใช้บล็อกวนซ้ำ (Loop) หรือเงื่อนไข (If-Else)</option>
+                            <option value="กำหนดค่าตัวเลขหรือข้อความผิด">กำหนดค่าตัวเลขหรือข้อความไม่ตรงตามโจทย์</option>
+                            <option value="ยังวางแผนอัลกอริทึมไม่ครบถ้วน">ยังวางแผนอัลกอริทึมไม่ครบถ้วน</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-600 mb-1">2. Act (แนวทางที่จะกลับไปปรับปรุงแก้ไขโค้ด)</label>
+                        <input type="text" id="pdcaActInput" placeholder="เช่น จะเพิ่มบล็อกวนซ้ำ 3 รอบ และตรวจสอบข้อความ..." class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs">
+                    </div>
+                </div>
+
+                <button onclick="submitPDCALog()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-xl text-sm transition">
+                    บันทึก PDCA Log และกลับไปซ่อมโค้ด
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. STORYBOARD PLANNING MODAL -->
+    <div id="storyboardModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden">
+            <div class="hrn-red-gradient text-white px-5 py-3.5 flex justify-between items-center">
+                <h3 class="font-bold text-base"><i class="fa-solid fa-pen-ruler mr-1.5 text-[#FDE047]"></i> ใบงานวางแผน Storyboard</h3>
+                <button onclick="closeModal('storyboardModal')" class="text-white/80 hover:text-white text-xl">&times;</button>
+            </div>
+            <div class="p-5 space-y-3 text-xs md:text-sm">
+                <p class="text-slate-600">ฝึกคิดเชิงคำนวณก่อนลงมือต่อบล็อก (Decomposition & Algorithm Design)</p>
+                <div>
+                    <label class="font-semibold text-slate-700 block mb-1">1. เป้าหมายของภารกิจนี้คืออะไร?</label>
+                    <input type="text" id="sbGoal" placeholder="ระบุสิ่งที่โปรแกรมต้องทำ..." class="w-full px-3 py-2 border rounded-lg text-xs">
+                </div>
+                <div>
+                    <label class="font-semibold text-slate-700 block mb-1">2. ลำดับขั้นตอนการทำงาน (Step 1 -> 2 -> 3)</label>
+                    <textarea id="sbSteps" rows="3" placeholder="ขั้นที่ 1 ...&#10;ขั้นที่ 2 ...&#10;ขั้นที่ 3 ..." class="w-full px-3 py-2 border rounded-lg text-xs"></textarea>
+                </div>
+                <button onclick="saveStoryboard()" class="w-full hrn-red-gradient text-white font-semibold py-2 rounded-xl text-sm">
+                    บันทึกแผนงาน (+10 XP)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. GOOGLE SHEETS CONFIG MODAL -->
+    <div id="configModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden">
+            <div class="bg-slate-900 text-white px-5 py-3.5 flex justify-between items-center">
+                <h3 class="font-bold text-base"><i class="fa-solid fa-cloud text-[#D4AF37] mr-1.5"></i> เชื่อมต่อฐานข้อมูล Google Sheets</h3>
+                <button onclick="closeModal('configModal')" class="text-white/80 hover:text-white text-xl">&times;</button>
+            </div>
+            <div class="p-5 space-y-3 text-xs md:text-sm">
+                <p class="text-slate-600">วางลิงก์ <b>Web App URL</b> จาก Google Apps Script เพื่อบันทึกผลการเรียนและสถิติของนักเรียนขึ้น Google Sheets อัตโนมัติ</p>
+                <div>
+                    <label class="font-semibold text-slate-700 block mb-1">Google Apps Script Web App URL:</label>
+                    <input type="url" id="gasUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-mono">
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button onclick="saveGasUrl()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 rounded-lg text-xs">
+                        บันทึกการเชื่อมต่อ
+                    </button>
+                    <button onclick="closeModal('configModal')" class="px-4 py-2 border border-slate-300 rounded-lg text-xs text-slate-600">
+                        ปิด
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 4. CUTE CENTER POPUP MODAL -->
+    <div id="cutePopupModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-sm w-full shadow-2xl border-4 border-[#FDE047] overflow-hidden text-center p-6 animate-[popIn_0.25s_ease-out] relative">
+            <div id="cutePopupEmoji" class="text-6xl mb-3 animate-bounce select-none">🎉</div>
+            <h3 id="cutePopupTitle" class="font-bold text-xl text-[#8B0000] mb-1.5">ยอดเยี่ยมมาก!</h3>
+            <p id="cutePopupMessage" class="text-sm text-slate-600 mb-4 leading-relaxed">ข้อความแจ้งเตือน</p>
+            <div id="cutePopupBadge" class="hidden inline-block bg-amber-100 text-amber-800 font-bold px-4 py-1.5 rounded-full text-sm mb-5 border border-amber-300 shadow-sm">
+                +100 XP
+            </div>
+            <button id="cutePopupBtn" onclick="closeCutePopup()" class="w-full hrn-red-gradient hover:opacity-95 text-white font-bold py-3 rounded-2xl shadow-md transition text-sm">
+                ไปลุยกันต่อ! 🚀
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+
+    <!-- 5. TEACHER MANAGE STUDENT MODAL (ADD / EDIT) -->
+    <div id="studentManageModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border-t-4 border-[#8B0000] overflow-hidden">
+            <div class="p-4 bg-red-50 border-b border-red-100 flex justify-between items-center">
+                <h3 id="studentModalTitle" class="font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-user-pen text-[#8B0000]"></i> เพิ่มข้อมูลนักเรียนใหม่
+                </h3>
+                <button onclick="closeModal('studentManageModal')" class="text-slate-400 hover:text-slate-700"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-5 space-y-3">
+                <input type="hidden" id="editOriginalStudentId">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs font-bold text-slate-700 block mb-1">รหัสนักเรียน *</label>
+                        <input type="text" id="manageStudentId" placeholder="เช่น 17731" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-[#8B0000]">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-700 block mb-1">รหัสผ่าน (PIN) *</label>
+                        <input type="text" id="manageStudentPin" maxlength="6" placeholder="ตั้ง PIN 4-6 หลัก" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono bg-amber-50/50 focus:outline-none focus:border-[#8B0000]">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-700 block mb-1">ชื่อ - นามสกุล *</label>
+                    <input type="text" id="manageStudentName" placeholder="เช่น ด.ช.กรกช ใจดี" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-[#8B0000]">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs font-bold text-slate-700 block mb-1">ห้องเรียน *</label>
+                        <select id="manageStudentRoom" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-[#8B0000]">
+                            <option value="ม.1/1">ชั้น ม.1/1</option>
+                            <option value="ม.1/2">ชั้น ม.1/2</option>
+                            <option value="ม.1/3">ชั้น ม.1/3</option>
+                            <option value="ม.1/4">ชั้น ม.1/4</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-700 block mb-1">เลขที่ *</label>
+                        <input type="number" id="manageStudentNo" min="1" max="60" placeholder="เช่น 15" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-[#8B0000]">
+                    </div>
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button onclick="saveManagedStudent()" class="flex-1 hrn-red-gradient hover:opacity-95 text-white font-semibold py-2.5 rounded-xl shadow transition text-sm">
+                        <i class="fa-solid fa-floppy-disk mr-1"></i> บันทึกข้อมูล
+                    </button>
+                    <button onclick="closeModal('studentManageModal')" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-semibold transition">
+                        ยกเลิก
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        // --- 1. CURRICULUM & 100 MISSIONS GENERATOR ---
+        const EMOJI_POOL = [
+            '🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯',
+            '🦁','🐮','🐷','🐸','🐵','🐔','🐧','🐦','🐤','🦆',
+            '🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🐛','🦋',
+            '🐌','🐞','🐜','🐢','🐍','🦎','🦖','🦕','🐙','🦑',
+            '🍎','🍊','🍋','🍌','🍉','🍇','🍓','🍒','🍑','🍍',
+            '🥭','🥝','🍅','🥑','🥦','🌽','🥕','🍔','🍟','🍕',
+            '🍩','🍪','🎂','🍰','🧁','🍫','🍬','🍭','🍦','🍧',
+            '⚽','🏀','🏈','⚾','🎾','🏐','🏉','🎱','🏓','🏸',
+            '🚗','🚕','🚙','🚌','🏎️','🚓','🚑','🚒','✈️','🚀',
+            '🛸','🚁','⛵','🚤','🛳️','🚂','🚲','🛴','🏆','👑'
+        ];
+
+        const BLOCK_DEFINITIONS = {
+            'move_forward': {
+                label: 'เดินไปข้างหน้า (Move Forward)',
+                color: 'bg-blue-600 text-white',
+                icon: 'fa-arrow-up',
+                python: 'robot.move_forward(1)',
+                pseudo: 'เดินไปข้างหน้า 1 หน่วย',
+                simOutput: '🤖 หุ่นยนต์เคลื่อนที่ไปข้างหน้า 1 ช่อง'
+            },
+            'turn_right': {
+                label: 'เลี้ยวขวา 90° (Turn Right)',
+                color: 'bg-indigo-600 text-white',
+                icon: 'fa-rotate-right',
+                python: 'robot.turn_right(90)',
+                pseudo: 'หมุนตัวเลี้ยวขวา 90 องศา',
+                simOutput: '↪️ หุ่นยนต์เลี้ยวขวา 90 องศา'
+            },
+            'turn_left': {
+                label: 'เลี้ยวซ้าย 90° (Turn Left)',
+                color: 'bg-sky-600 text-white',
+                icon: 'fa-rotate-left',
+                python: 'robot.turn_left(90)',
+                pseudo: 'หมุนตัวเลี้ยวซ้าย 90 องศา',
+                simOutput: '↩️ หุ่นยนต์เลี้ยวซ้าย 90 องศา'
+            },
+            'repeat_3': {
+                label: 'ทำซ้ำ 3 รอบ (Repeat 3 times)',
+                color: 'bg-amber-500 text-slate-900 font-semibold',
+                icon: 'fa-repeat',
+                python: 'for i in range(3): # วนซ้ำ 3 รอบ',
+                pseudo: 'ทำซ้ำคำสั่งถัดไปจำนวน 3 รอบ',
+                simOutput: '🔄 เริ่มต้นวงรอบการทำงานซ้ำ (3 รอบ)'
+            },
+            'if_obstacle': {
+                label: 'ถ้าพบสิ่งกีดขวาง (If Obstacle)',
+                color: 'bg-purple-600 text-white',
+                icon: 'fa-code-branch',
+                python: 'if sensor.distance() < 10:',
+                pseudo: 'ถ้า ระยะห่างสิ่งกีดขวาง < 10 ซม.',
+                simOutput: '📡 ตรวจสอบเซนเซอร์: พบสิ่งกีดขวางด้านหน้า!'
+            },
+            'collect_item': {
+                label: 'เก็บตัวอย่างวัตถุ (Collect Item)',
+                color: 'bg-teal-600 text-white',
+                icon: 'fa-hand-holding-heart',
+                python: 'robot.collect()',
+                pseudo: 'เก็บตัวอย่างวัตถุลงกล่อง',
+                simOutput: '📦 หุ่นยนต์เก็บตัวอย่างวัตถุสำเร็จ'
+            },
+            'say_hello': {
+                label: 'แสดงข้อความ "Hello HRN"',
+                color: 'bg-emerald-600 text-white',
+                icon: 'fa-comment-dots',
+                python: 'print("Hello HRN")',
+                pseudo: 'แสดงผลข้อความ "Hello HRN"',
+                simOutput: '💬 หน้าจอแสดงผล: "Hello HRN"'
+            }
+        };
+
+        // สร้าง 100 ภารกิจอัตโนมัติ (Bronze 40, Silver 35, Gold 25)
+        const MISSIONS = (function generate100Missions() {
+            const list = [];
+            const bronzePatterns = [
+                { name: 'ก้าวแรกสำรวจเส้นทาง', desc: 'เดินไปข้างหน้า 2 ครั้ง และแสดงข้อความ "Hello HRN"', seq: ['move_forward', 'move_forward', 'say_hello'] },
+                { name: 'เลี้ยวขวาเข้าฐานปฏิบัติการ', desc: 'เดินไปข้างหน้า เลี้ยวขวา และเดินไปข้างหน้าอีก 1 ครั้ง', seq: ['move_forward', 'turn_right', 'move_forward'] },
+                { name: 'เลี้ยวซ้ายหลบมุมตึก', desc: 'เดินไปข้างหน้า เลี้ยวซ้าย และแสดงข้อความ "Hello HRN"', seq: ['move_forward', 'turn_left', 'say_hello'] },
+                { name: 'ภารกิจเก็บตัวอย่างดิน', desc: 'เดินไปข้างหน้า เก็บตัวอย่างวัตถุ แล้วเลี้ยวขวา', seq: ['move_forward', 'collect_item', 'turn_right'] },
+                { name: 'เส้นทางตรงสู่เป้าหมาย', desc: 'เดินไปข้างหน้า 3 ครั้งติดต่อกัน แล้วเก็บตัวอย่างวัตถุ', seq: ['move_forward', 'move_forward', 'move_forward', 'collect_item'] }
+            ];
+            const silverPatterns = [
+                { name: 'วงรอบสามเหลี่ยมอัจฉริยะ', desc: 'ใช้คำสั่งทำซ้ำ 3 รอบ เพื่อเดินหน้าและเลี้ยวขวา', seq: ['repeat_3', 'move_forward', 'turn_right'] },
+                { name: 'เก็บตัวอย่างซ้ำ 3 จุด', desc: 'ใช้คำสั่งทำซ้ำ 3 รอบ เพื่อเดินหน้าและเก็บตัวอย่างวัตถุ', seq: ['repeat_3', 'move_forward', 'collect_item'] },
+                { name: 'เลี้ยวซ้ายวนซ้ำ', desc: 'ใช้คำสั่งทำซ้ำ 3 รอบ เพื่อเดินหน้าและเลี้ยวซ้าย', seq: ['repeat_3', 'move_forward', 'turn_left'] },
+                { name: 'วนซ้ำพร้อมรายงานผล', desc: 'ใช้คำสั่งทำซ้ำ 3 รอบ เดินหน้า เก็บวัตถุ และแสดงข้อความ "Hello HRN"', seq: ['repeat_3', 'move_forward', 'collect_item', 'say_hello'] },
+                { name: 'สำรวจมุมซ้ายขวา', desc: 'ทำซ้ำ 3 รอบ: เดินหน้า เลี้ยวขวา แล้วเลี้ยวซ้าย', seq: ['repeat_3', 'move_forward', 'turn_right', 'turn_left'] }
+            ];
+            const goldPatterns = [
+                { name: 'เซนเซอร์หลบสิ่งกีดขวางอัตโนมัติ', desc: 'ตรวจสอบสิ่งกีดขวาง หากพบให้เลี้ยวขวา เดินหน้า และแสดงข้อความ "Hello HRN"', seq: ['if_obstacle', 'turn_right', 'move_forward', 'say_hello'] },
+                { name: 'หุ่นยนต์กู้ภัยอัจฉริยะ', desc: 'หากพบสิ่งกีดขวาง ให้เลี้ยวซ้าย เดินหน้า และเก็บตัวอย่างวัตถุ', seq: ['if_obstacle', 'turn_left', 'move_forward', 'collect_item'] },
+                { name: 'อัลกอริทึมสำรวจอัตโนมัติ', desc: 'เดินหน้า ตรวจสอบสิ่งกีดขวาง เลี้ยวขวา และเก็บตัวอย่างวัตถุ', seq: ['move_forward', 'if_obstacle', 'turn_right', 'collect_item'] },
+                { name: 'ระบบนำทางขั้นสูง', desc: 'ทำซ้ำ 3 รอบ: ตรวจสอบสิ่งกีดขวาง เลี้ยวขวา และเดินหน้า', seq: ['repeat_3', 'if_obstacle', 'turn_right', 'move_forward'] },
+                { name: 'พิชิตภารกิจสูงสุด HRN', desc: 'ตรวจสอบสิ่งกีดขวาง เลี้ยวซ้าย เดินหน้า เก็บวัตถุ และแสดงข้อความ "Hello HRN"', seq: ['if_obstacle', 'turn_left', 'move_forward', 'collect_item', 'say_hello'] }
+            ];
+
+            // 1. BRONZE 40 ภารกิจ (M1 - M40)
+            for (let i = 1; i <= 40; i++) {
+                const p = bronzePatterns[(i - 1) % bronzePatterns.length];
+                list.push({
+                    id: `M${i}`,
+                    num: i,
+                    tier: 'BRONZE',
+                    tierColor: 'bg-amber-600',
+                    ctSkill: 'Decomposition (การแยกย่อยปัญหา)',
+                    title: `ด่านที่ ${i}: ${p.name}`,
+                    desc: p.desc,
+                    emoji: EMOJI_POOL[i - 1],
+                    availableBlocks: ['move_forward', 'turn_right', 'turn_left', 'collect_item', 'say_hello'],
+                    expectedSequence: p.seq,
+                    hints: [
+                        `Hint 1 (แนวคิด): แยกคำสั่งออกเป็น ${p.seq.length} ขั้นตอนตามลำดับเหตุการณ์ในโจทย์`,
+                        `Hint 2 (โครงสร้าง): เริ่มต้นด้วยบล็อก "${BLOCK_DEFINITIONS[p.seq[0]].label}"`,
+                        `Hint 3 (ลำดับที่ถูกต้อง): ${p.seq.map(k => BLOCK_DEFINITIONS[k].label.split(' ')[0]).join(' ➔ ')}`
+                    ],
+                    xp: 50
+                });
+            }
+
+            // 2. SILVER 35 ภารกิจ (M41 - M75)
+            for (let i = 41; i <= 75; i++) {
+                const p = silverPatterns[(i - 41) % silverPatterns.length];
+                list.push({
+                    id: `M${i}`,
+                    num: i,
+                    tier: 'SILVER',
+                    tierColor: 'bg-slate-600',
+                    ctSkill: 'Pattern & Abstraction (การหารูปแบบและเชิงนามธรรม)',
+                    title: `ด่านที่ ${i}: ${p.name}`,
+                    desc: p.desc,
+                    emoji: EMOJI_POOL[i - 1],
+                    availableBlocks: ['move_forward', 'turn_right', 'turn_left', 'repeat_3', 'collect_item', 'say_hello'],
+                    expectedSequence: p.seq,
+                    hints: [
+                        `Hint 1 (แนวคิด): สังเกตรูปแบบที่ทำงานซ้ำๆ แล้วใช้บล็อก "ทำซ้ำ 3 รอบ" ครอบคำสั่ง`,
+                        `Hint 2 (โครงสร้าง): วางบล็อก "ทำซ้ำ 3 รอบ" เป็นบล็อกแรกสุด`,
+                        `Hint 3 (ลำดับที่ถูกต้อง): ${p.seq.map(k => BLOCK_DEFINITIONS[k].label.split(' ')[0]).join(' ➔ ')}`
+                    ],
+                    xp: 100
+                });
+            }
+
+            // 3. GOLD 25 ภารกิจ (M76 - M100)
+            for (let i = 76; i <= 100; i++) {
+                const p = goldPatterns[(i - 76) % goldPatterns.length];
+                list.push({
+                    id: `M${i}`,
+                    num: i,
+                    tier: 'GOLD',
+                    tierColor: 'bg-yellow-500 text-slate-900',
+                    ctSkill: 'Algorithm Design (การออกแบบอัลกอริทึม)',
+                    title: `ด่านที่ ${i}: ${p.name}`,
+                    desc: p.desc,
+                    emoji: EMOJI_POOL[i - 1],
+                    availableBlocks: ['move_forward', 'turn_right', 'turn_left', 'repeat_3', 'if_obstacle', 'collect_item', 'say_hello'],
+                    expectedSequence: p.seq,
+                    hints: [
+                        `Hint 1 (แนวคิด): ใช้เงื่อนไขตรวจสอบเซนเซอร์ (If Obstacle) เพื่อตัดสินใจเลือกเส้นทาง`,
+                        `Hint 2 (โครงสร้าง): ต้องตรวจสอบสิ่งกีดขวางก่อนสั่งเลี้ยวหลบหลีกเสมอ`,
+                        `Hint 3 (ลำดับที่ถูกต้อง): ${p.seq.map(k => BLOCK_DEFINITIONS[k].label.split(' ')[0]).join(' ➔ ')}`
+                    ],
+                    xp: 150
+                });
+            }
+            return list;
+        })();
+
+        // --- 2. STATE MANAGEMENT ---
+        let currentUser = null;
+        let currentMissionIndex = 0;
+        let workspaceBlocks = [];
+        let codeTab = 'python';
+        let hintsOpenedCount = 0;
+        let clinicAttempts = 0;
+        let popupCallback = null;
+        let gasWebAppUrl = localStorage.getItem('hrn_gas_url') || 'https://script.google.com/macros/s/AKfycbytUZ0YDZgQiq9O_0iefISNtxSIpdAjvcmWjkvA-W1WI314ex5ASuB5jTNtWNv4sSVA/exec';
+        let studentsDB = JSON.parse(localStorage.getItem('hrn_students_db')) || [];
+
+        // --- 3. INITIALIZATION & AUTHENTICATION ---
+        window.onload = () => {
+            updateSyncBadge();
+            if (gasWebAppUrl) document.getElementById('gasUrlInput').value = gasWebAppUrl;
+        };
+
+        function switchView(viewName) {
+            document.getElementById('landingView').classList.add('hidden');
+            document.getElementById('studentView').classList.add('hidden');
+            document.getElementById('teacherView').classList.add('hidden');
+            document.getElementById(viewName + 'View').classList.remove('hidden');
+        }
+
+        function switchStudentAuthTab(tab) {
+            const loginForm = document.getElementById('studentLoginForm');
+            const regForm = document.getElementById('studentRegisterForm');
+            const tabLogin = document.getElementById('tabStudentLogin');
+            const tabReg = document.getElementById('tabStudentRegister');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                tabLogin.className = 'px-3 py-1.5 rounded-lg bg-[#8B0000] text-white shadow-sm transition';
+                tabReg.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition';
+            } else {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                tabReg.className = 'px-3 py-1.5 rounded-lg bg-emerald-600 text-white shadow-sm transition';
+                tabLogin.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition';
+            }
+        }
+
+        function handleStudentRegister() {
+            const id = document.getElementById('regStudentId').value.trim();
+            const pin = document.getElementById('regStudentPin').value.trim();
+            const name = document.getElementById('regStudentName').value.trim();
+            const room = document.getElementById('regStudentRoom').value;
+            const no = document.getElementById('regStudentNo').value.trim();
+
+            if (!id || !pin || !name || !no) {
+                showCutePopup('📝', 'ข้อมูลยังไม่ครบนะ!', 'กรุณากรอกรหัสนักเรียน รหัสผ่าน ชื่อ-นามสกุล และเลขที่ให้ครบทุกช่องค่ะ', '', 'กลับไปกรอก 👍');
+                return;
+            }
+
+            if (studentsDB.some(s => String(s.id) === id)) {
+                showCutePopup('⚠️', 'รหัสนักเรียนนี้สมัครแล้ว', `รหัส ${id} มีอยู่ในระบบแล้ว สามารถสลับไปที่แท็บ "เข้าสู่ระบบ" ได้เลยค่ะ`, '', 'ไปหน้าเข้าสู่ระบบ 🔑', () => switchStudentAuthTab('login'));
+                return;
+            }
+
+            const newStudent = {
+                id,
+                pin,
+                name,
+                room,
+                no,
+                xp: 0,
+                completed: [],
+                clinicAlert: false,
+                lastPdca: 'ลงทะเบียนเข้าใช้งานใหม่'
+            };
+
+            studentsDB.push(newStudent);
+            saveLocalDB();
+
+            if (gasWebAppUrl) {
+                fetch(gasWebAppUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'register',
+                        timestamp: new Date().toLocaleString('th-TH'),
+                        studentId: id,
+                        pin: pin,
+                        studentName: name,
+                        room: room,
+                        studentNo: no
+                    })
+                }).catch(err => console.log('Register sync error:', err));
+            }
+
+            currentUser = { role: 'student', ...newStudent };
+            showCutePopup(
+                '🎉',
+                'สมัครใช้งานสำเร็จ!',
+                `ยินดีต้อนรับ ${name} (${room} เลขที่ ${no}) เข้าสู่ระบบนิเวศการเรียนรู้โค้ดดิ้งอัจฉริยะ`,
+                '✨ เริ่มต้น 0 XP',
+                'เข้าสู่ห้องเรียนเลย! 🚀',
+                () => {
+                    setupSessionUI();
+                    loadMission(0);
+                    switchView('student');
+                }
+            );
+        }
+
+        async function handleStudentLogin() {
+            const id = document.getElementById('loginStudentId').value.trim();
+            const pin = document.getElementById('loginStudentPin').value.trim();
+
+            if (!id || !pin) {
+                showCutePopup('🔑', 'กรอกข้อมูลก่อนนะ', 'กรุณากรอกรหัสนักเรียนและรหัสผ่าน (PIN) เพื่อเข้าสู่ระบบค่ะ', '', 'ตกลง 👍');
+                return;
+            }
+
+            let student = studentsDB.find(s => String(s.id) === id);
+
+            if (!student && gasWebAppUrl) {
+                try {
+                    const btn = document.querySelector('#studentLoginForm button');
+                    const oldText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังตรวจสอบข้อมูล...';
+                    btn.disabled = true;
+
+                    const res = await fetch(gasWebAppUrl);
+                    const data = await res.json();
+
+                    btn.innerHTML = oldText;
+                    btn.disabled = false;
+
+                    if (data.status === 'success' && data.users) {
+                        const foundUser = data.users.find(u => String(u.id) === id);
+                        if (foundUser) {
+                            const userLogs = (data.logs || []).filter(l => String(l.id) === id);
+                            const latestLog = userLogs.length > 0 ? userLogs[userLogs.length - 1] : null;
+                            const doneCount = latestLog ? latestLog.completedCount : 0;
+                            const completedArr = [];
+                            if (doneCount >= 1) completedArr.push('M1');
+                            if (doneCount >= 2) completedArr.push('M2');
+                            if (doneCount >= 3) completedArr.push('M3');
+
+                            student = {
+                                id: foundUser.id,
+                                pin: foundUser.pin,
+                                name: foundUser.name,
+                                room: foundUser.room,
+                                no: foundUser.no,
+                                xp: latestLog ? latestLog.xp : 0,
+                                completed: completedArr,
+                                clinicAlert: latestLog ? latestLog.clinicAlert : false,
+                                lastPdca: latestLog ? latestLog.lastPdca : 'ดึงข้อมูลจาก Cloud สำเร็จ'
+                            };
+                            studentsDB.push(student);
+                            saveLocalDB();
+                        }
+                    }
+                } catch (err) {
+                    console.error('Fetch Sheets error:', err);
+                }
+            }
+
+            if (!student) {
+                showCutePopup('🧐', 'ไม่พบรหัสนักเรียนนี้', `ยังไม่มีรหัส ${id} ในระบบ หากเพิ่งใช้งานครั้งแรกให้กดแท็บ "สมัครใหม่" ด้านบนขวาของการ์ดค่ะ`, '', 'ไปสมัครใหม่ ✨', () => switchStudentAuthTab('register'));
+                return;
+            }
+
+            if (student.pin && String(student.pin) !== pin) {
+                showCutePopup('🔐', 'รหัสผ่านไม่ถูกต้อง', 'รหัสผ่าน (PIN) ไม่ตรงกับที่ลงทะเบียนไว้ กรุณาลองใหม่อีกครั้งค่ะ', '', 'ลองใหม่ 🔄');
+                return;
+            }
+
+            currentUser = { role: 'student', ...student };
+            setupSessionUI();
+            loadMission(0);
+            switchView('student');
+        }
+
+        function loginGuest() {
+            currentUser = { role: 'guest', id: 'GUEST', name: 'คณะกรรมการ / ผู้เยี่ยมชม', room: 'Demo', xp: 0, completed: [] };
+            setupSessionUI();
+            loadMission(0);
+            switchView('student');
+        }
+
+        function loginTeacher() {
+            const pin = document.getElementById('teacherPinInput').value;
+            if (pin === '1234' || pin === '') {
+                currentUser = { role: 'teacher', name: 'ครูมีน (กัญณภัทร)' };
+                setupSessionUI();
+                renderTeacherDashboard();
+                switchView('teacher');
+            } else {
+                showCutePopup('🔐', 'รหัสผ่านไม่ถูกต้อง', 'กรุณากรอกรหัสผ่านสำหรับครูผู้สอนให้ถูกต้อง (ค่าเริ่มต้นคือ 1234)', '', 'ลองใหม่อีกครั้ง 🔄');
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('userBadge').classList.add('hidden');
+            document.getElementById('logoutBtn').classList.add('hidden');
+            switchView('landing');
+        }
+
+        function setupSessionUI() {
+            document.getElementById('userBadge').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.remove('hidden');
+            document.getElementById('userDisplayName').innerText = currentUser.name;
+            updateUserXPUI();
+        }
+
+        function updateUserXPUI() {
+            if (!currentUser || currentUser.role === 'teacher') {
+                document.getElementById('userXPBadge').innerText = 'ADMIN';
+                return;
+            }
+            document.getElementById('userXPBadge').innerText = `${currentUser.xp} XP`;
+        }
+
+        // --- 4. STUDENT CODING STUDIO LOGIC ---
+        let selectedTierFilter = 'BRONZE';
+
+        function filterMissionTier(tier) {
+            selectedTierFilter = tier;
+            ['BRONZE', 'SILVER', 'GOLD'].forEach(t => {
+                const btn = document.getElementById('filterBtn' + t);
+                if (t === tier) {
+                    btn.className = t === 'BRONZE' ? 'px-3 py-1 rounded-full bg-amber-600 text-white shadow-sm transition'
+                        : t === 'SILVER' ? 'px-3 py-1 rounded-full bg-slate-700 text-white shadow-sm transition'
+                        : 'px-3 py-1 rounded-full bg-yellow-500 text-slate-900 shadow-sm transition';
+                } else {
+                    btn.className = 'px-3 py-1 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition';
+                }
+            });
+            renderMissionSelector();
+        }
+
+        function toggleEmojiDrawer() {
+            const grid = document.getElementById('emojiCollectionGrid');
+            grid.classList.toggle('hidden');
+        }
+
+        function renderEmojiCollection() {
+            const grid = document.getElementById('emojiCollectionGrid');
+            const progressText = document.getElementById('emojiProgressText');
+            if (!grid || !currentUser) return;
+
+            const completedSet = new Set(currentUser.completed || []);
+            progressText.innerText = `สะสมแล้ว ${completedSet.size} / 100 ตัว`;
+
+            grid.innerHTML = MISSIONS.map((m, idx) => {
+                const isUnlocked = completedSet.has(m.id);
+                return `
+                    <div onclick="jumpToMission(${idx})" title="${m.title} (${isUnlocked ? 'ปลดล็อกแล้ว!' : 'ยังไม่ผ่าน - คลิกเพื่อเล่นด่านนี้'})"
+                         class="cursor-pointer aspect-square rounded-lg flex flex-col items-center justify-center text-base md:text-lg border ${isUnlocked ? 'bg-amber-50 border-amber-300 shadow-sm emoji-unlocked' : 'bg-slate-100 border-slate-200 emoji-locked'} hover:scale-110 transition">
+                        <span>${m.emoji}</span>
+                        <span class="text-[8px] font-mono text-slate-500 leading-none mt-0.5">${m.num}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function jumpToMission(index) {
+            const targetMission = MISSIONS[index];
+            if (selectedTierFilter !== targetMission.tier) {
+                filterMissionTier(targetMission.tier);
+            }
+            loadMission(index);
+        }
+
+        function renderMissionSelector() {
+            renderEmojiCollection();
+            const container = document.getElementById('missionListContainer');
+            const filteredMissions = MISSIONS.map((m, idx) => ({ ...m, realIndex: idx }))
+                                             .filter(m => m.tier === selectedTierFilter);
+
+            container.innerHTML = filteredMissions.map(m => {
+                const isCompleted = currentUser.completed && currentUser.completed.includes(m.id);
+                const isActive = m.realIndex === currentMissionIndex;
+                return `
+                    <div onclick="loadMission(${m.realIndex})" class="cursor-pointer rounded-xl p-2.5 border-2 transition ${isActive ? 'border-[#8B0000] bg-red-50/50' : 'border-slate-200 hover:border-slate-300 bg-white'}">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold text-white ${m.tierColor}">${m.tier} #${m.num}</span>
+                            <span class="text-base ${isCompleted ? 'emoji-unlocked' : 'emoji-locked'}">${m.emoji}</span>
+                        </div>
+                        <div class="font-bold text-xs text-slate-800 truncate">${m.title}</div>
+                        <div class="text-[11px] mt-0.5 ${isCompleted ? 'text-emerald-600 font-semibold' : 'text-slate-400'}">
+                            ${isCompleted ? '<i class="fa-solid fa-circle-check"></i> ปลดล็อกอิโมจิแล้ว' : `+${m.xp} XP`}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function loadMission(index) {
+            currentMissionIndex = index;
+            const mission = MISSIONS[index];
+            hintsOpenedCount = 0;
+            clinicAttempts = 0;
+
+            document.getElementById('activeMissionTierBadge').className = `px-2.5 py-0.5 rounded text-xs font-bold ${mission.tierColor}`;
+            document.getElementById('activeMissionTierBadge').innerText = mission.tier;
+            document.getElementById('activeMissionCTTag').innerText = `ทักษะ: ${mission.ctSkill}`;
+            document.getElementById('activeMissionTitle').innerText = mission.title;
+            document.getElementById('activeMissionDesc').innerText = `คำชี้แจง: ${mission.desc}`;
+
+            const toolbox = document.getElementById('toolboxContainer');
+            toolbox.innerHTML = mission.availableBlocks.map(blockKey => {
+                const b = BLOCK_DEFINITIONS[blockKey];
+                return `
+                    <div onclick="addBlockToWorkspace('${blockKey}')" class="block-item ${b.color} px-3 py-2.5 rounded-lg text-xs font-medium shadow-sm flex items-center justify-between">
+                        <span><i class="fa-solid ${b.icon} mr-2"></i>${b.label}</span>
+                        <i class="fa-solid fa-plus opacity-75"></i>
+                    </div>
+                `;
+            }).join('');
+
+            clearWorkspace();
+            renderMissionSelector();
+        }
+
+        function addBlockToWorkspace(blockKey) {
+            workspaceBlocks.push(blockKey);
+            renderWorkspace();
+        }
+
+        function removeBlockFromWorkspace(index) {
+            workspaceBlocks.splice(index, 1);
+            renderWorkspace();
+        }
+
+        function clearWorkspace() {
+            workspaceBlocks = [];
+            renderWorkspace();
+            document.getElementById('consoleOutput').innerHTML = '<span class="text-slate-400">กดปุ่ม "ทดสอบรันโค้ด" เพื่อดูผลลัพธ์การทำงาน...</span>';
+            document.getElementById('simStatusBadge').innerText = 'พร้อมทำงาน';
+        }
+
+        function renderWorkspace() {
+            const listEl = document.getElementById('userBlocksList');
+            const hintEl = document.getElementById('emptyWorkspaceHint');
+
+            if (workspaceBlocks.length === 0) {
+                listEl.innerHTML = '';
+                hintEl.classList.remove('hidden');
+            } else {
+                hintEl.classList.add('hidden');
+                listEl.innerHTML = workspaceBlocks.map((key, idx) => {
+                    const b = BLOCK_DEFINITIONS[key];
+                    return `
+                        <div class="workspace-block ${b.color} px-3 py-2 rounded-lg text-xs flex items-center justify-between shadow-sm">
+                            <span><span class="opacity-60 mr-1.5">${idx + 1}.</span><i class="fa-solid ${b.icon} mr-1.5"></i>${b.label}</span>
+                            <button onclick="removeBlockFromWorkspace(${idx})" class="hover:bg-black/20 px-1.5 py-0.5 rounded text-white/90" title="ลบบล็อกนี้">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            }
+            updateRealTimeCode();
+        }
+
+        function switchCodeTab(tab) {
+            codeTab = tab;
+            document.getElementById('tabPythonBtn').className = tab === 'python' ? 'px-2 py-0.5 rounded bg-slate-700 text-white font-medium' : 'px-2 py-0.5 rounded text-slate-400 hover:text-white';
+            document.getElementById('tabPseudoBtn').className = tab === 'pseudo' ? 'px-2 py-0.5 rounded bg-slate-700 text-white font-medium' : 'px-2 py-0.5 rounded text-slate-400 hover:text-white';
+            updateRealTimeCode();
+        }
+
+        function updateRealTimeCode() {
+            const display = document.getElementById('codeOutputDisplay');
+            if (workspaceBlocks.length === 0) {
+                display.innerText = codeTab === 'python'
+                    ? '# รอการต่อบล็อกคำสั่ง...\ndef main():\n    pass'
+                    : '// รอการต่อบล็อกคำสั่ง...\nเริ่มต้นโปรแกรม\nจบโปรแกรม';
+                return;
+            }
+
+            if (codeTab === 'python') {
+                let indent = '    ';
+                let lines = ['import hrn_robot as robot', '', 'def main():'];
+                workspaceBlocks.forEach(key => {
+                    lines.push(indent + BLOCK_DEFINITIONS[key].python);
+                    if (key === 'repeat_3' || key === 'if_obstacle') indent = '        ';
+                });
+                lines.push('', 'main()');
+                display.innerText = lines.join('\n');
+            } else {
+                let lines = ['เริ่มต้นโปรแกรม (START)'];
+                workspaceBlocks.forEach((key, i) => {
+                    lines.push(`  ขั้นที่ ${i + 1}: ${BLOCK_DEFINITIONS[key].pseudo}`);
+                });
+                lines.push('จบโปรแกรม (END)');
+                display.innerText = lines.join('\n');
+            }
+        }
+
+        function runSimulation() {
+            const consoleEl = document.getElementById('consoleOutput');
+            if (workspaceBlocks.length === 0) {
+                consoleEl.innerHTML = '<span class="text-rose-600">⚠️ กรุณาต่อบล็อกคำสั่งอย่างน้อย 1 บล็อกก่อนทดสอบรันค่ะ</span>';
+                return;
+            }
+            document.getElementById('simStatusBadge').innerText = 'กำลังประมวลผล...';
+            let logs = ['<div class="text-emerald-700 font-semibold">▶ เริ่มต้นการทำงานของโปรแกรม...</div>'];
+            workspaceBlocks.forEach((key, i) => {
+                logs.push(`<div>[${i + 1}] ${BLOCK_DEFINITIONS[key].simOutput}</div>`);
+            });
+            logs.push('<div class="text-slate-500 mt-1">■ จบการทำงาน</div>');
+            consoleEl.innerHTML = logs.join('');
+            document.getElementById('simStatusBadge').innerText = 'เสร็จสิ้น';
+        }
+
+        function checkMissionSolution() {
+            const mission = MISSIONS[currentMissionIndex];
+            const isCorrect = JSON.stringify(workspaceBlocks) === JSON.stringify(mission.expectedSequence);
+
+            if (isCorrect) {
+                runSimulation();
+                if (!currentUser.completed.includes(mission.id)) {
+                    currentUser.completed.push(mission.id);
+                    currentUser.xp += mission.xp;
+                    updateUserXPUI();
+                }
+                syncStudentRecord(false, 'ผ่านภารกิจ ' + mission.title);
+                renderMissionSelector();
+
+                const nextIdx = currentMissionIndex + 1;
+                const hasNext = nextIdx < MISSIONS.length;
+                showCutePopup(
+                    mission.emoji,
+                    `ปลดล็อกอิโมจิ ${mission.emoji} สำเร็จ!`,
+                    `เก่งมาก! คุณพิชิต "${mission.title}" และเก็บอิโมจิเข้าสมุดสะสมเรียบร้อยแล้ว`,
+                    `✨ ได้รับ +${mission.xp} XP`,
+                    hasNext ? 'ไปด่านถัดไปเลย! 🚀' : 'พิชิตครบ 100 ด่านแล้ว! 👑',
+                    () => { if (hasNext) jumpToMission(nextIdx); }
+                );
+            } else {
+                clinicAttempts++;
+                syncStudentRecord(true, `ติดบั๊กใน ${mission.title} (ครั้งที่ ${clinicAttempts})`);
+                openClinicModal('error');
+            }
+        }
+
+        // --- 5. SMART CODING CLINIC & PDCA LOGIC ---
+        function openClinicModal(triggerType) {
+            const mission = MISSIONS[currentMissionIndex];
+            const diagText = document.getElementById('clinicDiagnosisText');
+
+            if (triggerType === 'error') {
+                diagText.innerText = workspaceBlocks.length === 0
+                    ? 'คุณยังไม่ได้ต่อบล็อกคำสั่งใดๆ เลย ลองเปิดบัตรคำใบ้ใบที่ 1 เพื่อดูแนวทางเริ่มต้นนะคะ'
+                    : `ลำดับบล็อกที่ต่อ (${workspaceBlocks.length} บล็อก) ยังไม่ตรงตามเป้าหมายของภารกิจ "${mission.title}" ลองใช้ Hint Cards วิเคราะห์จุดพลาดดูนะคะ`;
+            } else {
+                diagText.innerText = 'ยินดีต้อนรับสู่คลินิกแก้โค้ด! หากไม่มั่นใจสามารถเปิดบัตรคำใบ้ทีละใบเพื่อตรวจสอบแนวคิดได้ค่ะ';
+            }
+
+            renderHintCards();
+            document.getElementById('clinicModal').classList.remove('hidden');
+        }
+
+        function renderHintCards() {
+            const mission = MISSIONS[currentMissionIndex];
+            document.getElementById('hintCounterBadge').innerText = `เปิดแล้ว ${hintsOpenedCount}/3 ใบ`;
+            const container = document.getElementById('hintCardsContainer');
+
+            container.innerHTML = mission.hints.map((hintText, idx) => {
+                const isOpened = idx < hintsOpenedCount;
+                if (isOpened) {
+                    return `
+                        <div class="bg-amber-50 border border-amber-300 rounded-xl p-3 text-xs text-amber-950">
+                            <i class="fa-solid fa-lightbulb text-amber-500 mr-1.5"></i> ${hintText}
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <button onclick="revealNextHint(${idx})" class="w-full text-left bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-xl p-2.5 text-xs font-medium text-slate-700 flex justify-between items-center transition">
+                            <span><i class="fa-solid fa-lock text-slate-400 mr-2"></i> คลิกเพื่อเปิดบัตรคำใบ้ (Hint Card ใบที่ ${idx + 1})</span>
+                            <span class="text-[11px] bg-white px-2 py-0.5 rounded border">เปิดดู</span>
+                        </button>
+                    `;
+                }
+            }).join('');
+        }
+
+        function revealNextHint(idx) {
+            if (idx === hintsOpenedCount) {
+                hintsOpenedCount++;
+                renderHintCards();
+            } else {
+                showCutePopup('💡', 'ใจเย็นๆ นะคะ', 'กรุณาเปิดบัตรคำใบ้เรียงตามลำดับจากใบที่ 1 ➔ 2 ➔ 3 เพื่อฝึกกระบวนการคิดนะคะ', '', 'เข้าใจแล้วค่ะ 😊');
+            }
+        }
+
+        function submitPDCALog() {
+            const checkVal = document.getElementById('pdcaCheckInput').value;
+            const actVal = document.getElementById('pdcaActInput').value.trim() || 'ปรับแก้ลำดับบล็อกตามคำแนะนำ';
+            const summary = `[Check: ${checkVal}] -> [Act: ${actVal}]`;
+
+            syncStudentRecord(hintsOpenedCount >= 3, summary);
+            document.getElementById('pdcaActInput').value = '';
+            closeModal('clinicModal');
+        }
+
+        function openStoryboardModal() {
+            document.getElementById('storyboardModal').classList.remove('hidden');
+        }
+
+        function saveStoryboard() {
+            const goal = document.getElementById('sbGoal').value.trim();
+            if (!goal) {
+                showCutePopup('📝', 'เดี๋ยวก่อนนะ!', 'กรุณากรอกเป้าหมายของภารกิจก่อนบันทึกนะคะ', '', 'รับทราบค่ะ 👍');
+                return;
+            }
+            currentUser.xp += 10;
+            updateUserXPUI();
+            closeModal('storyboardModal');
+            showCutePopup('🌟', 'วางแผนเยี่ยมมาก!', 'บันทึกใบงาน Storyboard เรียบร้อย พร้อมลงมือโค้ดดิ้งแล้ว!', '✨ ได้รับ +10 XP', 'เริ่มต่อบล็อกเลย! 💻');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function showCutePopup(emoji, title, message, badgeText = '', btnText = 'ตกลง 👍', callback = null) {
+            document.getElementById('cutePopupEmoji').innerText = emoji;
+            document.getElementById('cutePopupTitle').innerText = title;
+            document.getElementById('cutePopupMessage').innerText = message;
+            document.getElementById('cutePopupBtn').innerText = btnText;
+
+            const badgeEl = document.getElementById('cutePopupBadge');
+            if (badgeText) {
+                badgeEl.innerText = badgeText;
+                badgeEl.classList.remove('hidden');
+            } else {
+                badgeEl.classList.add('hidden');
+            }
+
+            popupCallback = callback;
+            document.getElementById('cutePopupModal').classList.remove('hidden');
+        }
+
+        function closeCutePopup() {
+            document.getElementById('cutePopupModal').classList.add('hidden');
+            if (popupCallback) {
+                const cb = popupCallback;
+                popupCallback = null;
+                cb();
+            }
+        }
+
+        // --- 6. TEACHER DASHBOARD & GOOGLE SHEETS SYNC ---
+        function syncStudentRecord(isAlert, pdcaNote) {
+            if (!currentUser || currentUser.role !== 'student') return;
+
+            const idx = studentsDB.findIndex(s => String(s.id) === String(currentUser.id));
+            if (idx !== -1) {
+                studentsDB[idx].xp = currentUser.xp;
+                studentsDB[idx].completed = currentUser.completed;
+                studentsDB[idx].clinicAlert = isAlert;
+                studentsDB[idx].lastPdca = pdcaNote;
+                saveLocalDB();
+            }
+
+            if (gasWebAppUrl) {
+                fetch(gasWebAppUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'log',
+                        timestamp: new Date().toLocaleString('th-TH'),
+                        studentId: currentUser.id,
+                        studentName: currentUser.name,
+                        room: currentUser.room,
+                        xp: currentUser.xp,
+                        completedCount: currentUser.completed.length,
+                        clinicAlert: isAlert ? 'NEEDS_HELP' : 'OK',
+                        pdcaLog: pdcaNote
+                    })
+                }).catch(err => console.log('Sync background error:', err));
+            }
+        }
+
+        function saveLocalDB() {
+            localStorage.setItem('hrn_students_db', JSON.stringify(studentsDB));
+        }
+
+        async function syncFromGoogleSheets() {
+            if (!gasWebAppUrl) return;
+            try {
+                const res = await fetch(gasWebAppUrl);
+                const data = await res.json();
+                if (data.status === 'success' && Array.isArray(data.users)) {
+                    // อัปเดตให้ตรงกับข้อมูลที่มีอยู่จริงใน Google Sheets
+                    studentsDB = data.users.map(u => {
+                        const userLogs = (data.logs || []).filter(l => String(l.id) === String(u.id));
+                        const latestLog = userLogs.length > 0 ? userLogs[userLogs.length - 1] : null;
+                        const doneCount = latestLog ? latestLog.completedCount : 0;
+                        const completedArr = [];
+                        for (let i = 1; i <= doneCount; i++) {
+                            completedArr.push(`M${i}`);
+                        }
+                        return {
+                            id: u.id,
+                            pin: u.pin,
+                            name: u.name,
+                            room: u.room,
+                            no: u.no,
+                            xp: latestLog ? latestLog.xp : 0,
+                            completed: completedArr,
+                            clinicAlert: latestLog ? latestLog.clinicAlert : false,
+                            lastPdca: latestLog ? latestLog.lastPdca : 'ลงทะเบียนในระบบ'
+                        };
+                    });
+                    saveLocalDB();
+                    renderTeacherDashboard();
+                    showCutePopup('🔄', 'ซิงก์ข้อมูลสำเร็จ!', 'อัปเดตข้อมูลให้ตรงกับ Google Sheets ล่าสุดเรียบร้อยแล้วค่ะ', '', 'ยอดเยี่ยม! ✅');
+                }
+            } catch (err) {
+                console.error('Sync error:', err);
+            }
+        }
+
+        function clearAllStudentsData() {
+            if (!confirm('⚠️ คำเตือน: ต้องการล้างข้อมูลนักเรียนและประวัติการเรียน "ทั้งหมด" ทั้งในหน้าเว็บและใน Google Sheets ใช่หรือไม่? (กู้คืนไม่ได้)')) return;
+            studentsDB = [];
+            saveLocalDB();
+            renderTeacherDashboard();
+            syncUserActionToSheets('clear_all', {});
+            showCutePopup('🧹', 'ล้างข้อมูลทั้งหมดเรียบร้อย', 'ลบรายชื่อและประวัติทั้งหมดทั้งในหน้าเว็บและ Google Sheets เรียบร้อยแล้วค่ะ', '', 'รับทราบ 👍');
+        }
+
+        function renderTeacherDashboard() {
+            document.getElementById('kpiTotalStudents').innerText = studentsDB.length;
+            const totalCompleted = studentsDB.reduce((acc, s) => acc + s.completed.length, 0);
+            const maxPossible = studentsDB.length * MISSIONS.length;
+            const passRate = maxPossible > 0 ? Math.round((totalCompleted / maxPossible) * 100) : 0;
+            document.getElementById('kpiPassRate').innerText = `${passRate}%`;
+
+            const goldCount = studentsDB.filter(s => s.completed.includes('M3')).length;
+            document.getElementById('kpiGoldCount').innerText = `${goldCount} คน`;
+
+            const alertsCount = studentsDB.filter(s => s.clinicAlert).length;
+            document.getElementById('kpiClinicAlerts').innerText = `${alertsCount} คน`;
+
+            renderTeacherTable();
+        }
+
+        let revealedPins = {};
+
+        function togglePinVisibility(studentId) {
+            revealedPins[studentId] = !revealedPins[studentId];
+            renderTeacherTable();
+        }
+
+        function renderTeacherTable() {
+            const filterRoom = document.getElementById('filterRoomSelect').value;
+            const searchQuery = (document.getElementById('teacherSearchInput')?.value || '').trim().toLowerCase();
+            const tbody = document.getElementById('teacherTableBody');
+
+            let filtered = filterRoom === 'ALL' ? [...studentsDB] : studentsDB.filter(s => s.room === filterRoom);
+
+            // ค้นหาจากชื่อ หรือ รหัสนักเรียน
+            if (searchQuery) {
+                filtered = filtered.filter(s =>
+                    String(s.id).toLowerCase().includes(searchQuery) ||
+                    (s.name && s.name.toLowerCase().includes(searchQuery))
+                );
+            }
+
+            // เรียงตามห้อง และเลขที่
+            filtered.sort((a, b) => {
+                if (a.room !== b.room) return a.room.localeCompare(b.room);
+                return (parseInt(a.no) || 999) - (parseInt(b.no) || 999);
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400 text-sm">ไม่พบข้อมูลนักเรียนที่ค้นหา</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(s => {
+                let badge = '<span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-xs">เริ่มต้น</span>';
+                if (s.completed.length >= 76) badge = '<span class="px-2 py-0.5 rounded bg-yellow-100 text-yellow-800 font-bold text-xs">🏆 Gold</span>';
+                else if (s.completed.length >= 41) badge = '<span class="px-2 py-0.5 rounded bg-slate-200 text-slate-800 font-bold text-xs">🥈 Silver</span>';
+                else if (s.completed.length >= 1) badge = '<span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-xs">🥉 Bronze</span>';
+
+                const isPinShown = revealedPins[s.id];
+                const pinText = s.pin ? (isPinShown ? s.pin : '••••') : 'ยังไม่ตั้ง';
+
+                const statusHtml = s.clinicAlert
+                    ? '<span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 font-bold text-xs animate-pulse"><i class="fa-solid fa-bell mr-1"></i>ช่วยด่วน</span>'
+                    : '<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-xs"><i class="fa-solid fa-check mr-1"></i>ปกติ</span>';
+
+                return `
+                    <tr class="hover:bg-slate-50">
+                        <td class="py-2.5 px-3 font-mono text-xs font-semibold text-slate-700">${s.id}</td>
+                        <td class="py-2.5 px-3 text-center text-xs">${s.no || '-'}</td>
+                        <td class="py-2.5 px-3 font-medium text-slate-800">${s.name}</td>
+                        <td class="py-2.5 px-3 text-xs">${s.room}</td>
+                        <td class="py-2.5 px-3">
+                            <div class="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded text-xs font-mono text-amber-900">
+                                <span>${pinText}</span>
+                                <button onclick="togglePinVisibility('${s.id}')" title="แสดง/ซ่อนรหัสผ่าน" class="text-amber-600 hover:text-amber-900">
+                                    <i class="fa-solid ${isPinShown ? 'fa-eye-slash' : 'fa-eye'}"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="py-2.5 px-3 text-xs">${badge} <span class="text-slate-500 ml-1">(${s.completed.length}/100)</span></td>
+                        <td class="py-2.5 px-3">${statusHtml}</td>
+                        <td class="py-2.5 px-3 text-center">
+                            <div class="inline-flex items-center gap-1.5">
+                                <button onclick="openStudentFormModal('${s.id}')" title="แก้ไขข้อมูล / เปลี่ยนรหัสผ่าน" class="px-2.5 py-1 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-lg text-xs font-semibold transition">
+                                    <i class="fa-solid fa-pen-to-square"></i> แก้ไข
+                                </button>
+                                <button onclick="deleteStudentRecord('${s.id}')" title="ลบข้อมูลนักเรียน" class="px-2.5 py-1 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-lg text-xs font-semibold transition">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function openStudentFormModal(studentId = null) {
+            const titleEl = document.getElementById('studentModalTitle');
+            const origIdEl = document.getElementById('editOriginalStudentId');
+            const idEl = document.getElementById('manageStudentId');
+            const pinEl = document.getElementById('manageStudentPin');
+            const nameEl = document.getElementById('manageStudentName');
+            const roomEl = document.getElementById('manageStudentRoom');
+            const noEl = document.getElementById('manageStudentNo');
+
+            if (studentId) {
+                const s = studentsDB.find(item => String(item.id) === String(studentId));
+                if (!s) return;
+                titleEl.innerHTML = '<i class="fa-solid fa-user-pen text-[#8B0000]"></i> แก้ไขข้อมูล / รีเซ็ตรหัสผ่านนักเรียน';
+                origIdEl.value = s.id;
+                idEl.value = s.id;
+                pinEl.value = s.pin || '';
+                nameEl.value = s.name;
+                roomEl.value = s.room;
+                noEl.value = s.no || '';
+            } else {
+                titleEl.innerHTML = '<i class="fa-solid fa-user-plus text-[#8B0000]"></i> เพิ่มข้อมูลนักเรียนใหม่';
+                origIdEl.value = '';
+                idEl.value = '';
+                pinEl.value = '';
+                nameEl.value = '';
+                roomEl.value = 'ม.1/1';
+                noEl.value = '';
+            }
+            document.getElementById('studentManageModal').classList.remove('hidden');
+        }
+
+        function saveManagedStudent() {
+            const origId = document.getElementById('editOriginalStudentId').value.trim();
+            const id = document.getElementById('manageStudentId').value.trim();
+            const pin = document.getElementById('manageStudentPin').value.trim();
+            const name = document.getElementById('manageStudentName').value.trim();
+            const room = document.getElementById('manageStudentRoom').value;
+            const no = document.getElementById('manageStudentNo').value.trim();
+
+            if (!id || !pin || !name || !no) {
+                showCutePopup('📝', 'ข้อมูลยังไม่ครบ', 'กรุณากรอกรหัสนักเรียน รหัสผ่าน ชื่อ-นามสกุล และเลขที่ให้ครบทุกช่องค่ะ', '', 'ตกลง 👍');
+                return;
+            }
+
+            if (origId) {
+                // แก้ไขข้อมูลเดิม
+                if (origId !== id && studentsDB.some(s => String(s.id) === id)) {
+                    showCutePopup('⚠️', 'รหัสนักเรียนซ้ำ', `รหัส ${id} มีอยู่ในระบบแล้วค่ะ`, '', 'แก้ไขใหม่ 🔄');
+                    return;
+                }
+                const idx = studentsDB.findIndex(s => String(s.id) === origId);
+                if (idx !== -1) {
+                    studentsDB[idx] = { ...studentsDB[idx], id, pin, name, room, no };
+                }
+                syncUserActionToSheets('update_user', { oldId: origId, studentId: id, pin, studentName: name, room, studentNo: no });
+                closeModal('studentManageModal');
+                saveLocalDB();
+                renderTeacherDashboard();
+                showCutePopup('✅', 'แก้ไขข้อมูลเรียบร้อย!', `อัปเดตข้อมูลและรหัสผ่านของ ${name} เรียบร้อยแล้ว`, '', 'เยี่ยมเลย 👍');
+            } else {
+                // เพิ่มนักเรียนใหม่
+                if (studentsDB.some(s => String(s.id) === id)) {
+                    showCutePopup('⚠️', 'รหัสนักเรียนซ้ำ', `รหัส ${id} มีอยู่ในระบบแล้วค่ะ`, '', 'แก้ไขใหม่ 🔄');
+                    return;
+                }
+                const newStudent = { id, pin, name, room, no, xp: 0, completed: [], clinicAlert: false, lastPdca: 'ครูเพิ่มข้อมูลเข้าระบบ' };
+                studentsDB.push(newStudent);
+                syncUserActionToSheets('register', { timestamp: new Date().toLocaleString('th-TH'), studentId: id, pin, studentName: name, room, studentNo: no });
+                closeModal('studentManageModal');
+                saveLocalDB();
+                renderTeacherDashboard();
+                showCutePopup('🎉', 'เพิ่มนักเรียนสำเร็จ!', `เพิ่ม ${name} (${room} เลขที่ ${no}) เข้าสู่ระบบเรียบร้อยแล้ว`, '', 'ตกลง 👍');
+            }
+        }
+
+        function deleteStudentRecord(studentId) {
+            const s = studentsDB.find(item => String(item.id) === String(studentId));
+            if (!s) return;
+            if (!confirm(`ยืนยันการลบข้อมูลของ "${s.name}" (รหัส ${s.id}) ออกจากระบบหรือไม่?`)) return;
+
+            studentsDB = studentsDB.filter(item => String(item.id) !== String(studentId));
+            saveLocalDB();
+            renderTeacherDashboard();
+            syncUserActionToSheets('delete_user', { studentId: s.id });
+            showCutePopup('🗑️', 'ลบข้อมูลสำเร็จ', `ลบข้อมูลของ ${s.name} ออกจากระบบเรียบร้อยแล้ว`, '', 'รับทราบ 👍');
+        }
+
+        function clearAllStudentsData() {
+            if (!confirm('⚠️ คำเตือน: ต้องการล้างข้อมูลนักเรียนและประวัติการเรียน "ทั้งหมด" ทั้งในหน้าเว็บและใน Google Sheets ใช่หรือไม่? (กู้คืนไม่ได้)')) return;
+            studentsDB = [];
+            saveLocalDB();
+            renderTeacherDashboard();
+            syncUserActionToSheets('clear_all', {});
+            showCutePopup('🧹', 'ล้างข้อมูลทั้งหมดเรียบร้อย', 'ลบรายชื่อและประวัติทั้งหมดทั้งในหน้าเว็บและ Google Sheets เรียบร้อยแล้วค่ะ', '', 'รับทราบ 👍');
+        }
+
+        function syncUserActionToSheets(actionType, payload) {
+            if (!gasWebAppUrl) return;
+            fetch(gasWebAppUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: actionType, ...payload })
+            }).catch(err => console.log('Sync user action error:', err));
+        }
+
+        function getFilteredStudentsForExport() {
+            const roomFilter = document.getElementById('filterRoomSelect').value;
+            const list = roomFilter === 'ALL'
+                ? [...studentsDB]
+                : studentsDB.filter(s => s.room === roomFilter);
+            
+            // เรียงลำดับตามห้องเรียน และเลขที่ (หรือรหัสนักเรียน)
+            list.sort((a, b) => {
+                if (a.room !== b.room) return a.room.localeCompare(b.room);
+                const noA = parseInt(a.no) || 9999;
+                const noB = parseInt(b.no) || 9999;
+                if (noA !== noB) return noA - noB;
+                return String(a.id).localeCompare(String(b.id));
+            });
+
+            return { roomFilter, list };
+        }
+
+        function exportToCSV() {
+            const { roomFilter, list } = getFilteredStudentsForExport();
+            if (list.length === 0) {
+                showCutePopup('📭', 'ไม่มีข้อมูลสำหรับส่งออก', `ยังไม่มีรายชื่อนักเรียนในกลุ่ม "${roomFilter === 'ALL' ? 'ทุกห้องเรียน' : roomFilter}" ค่ะ`, '', 'รับทราบ 👍');
+                return;
+            }
+
+            const roomTag = roomFilter === 'ALL' ? 'All_Rooms' : roomFilter.replace('/', '-');
+            let csv = '\uFEFFรหัสนักเรียน,เลขที่,ชื่อ-นามสกุล,ห้องเรียน,ระดับเหรียญ,คะแนน XP,จำนวนด่านที่ผ่าน (เต็ม 100),สถานะคลินิก,บันทึก PDCA ล่าสุด\n';
+
+            list.forEach(s => {
+                let tierName = 'เริ่มต้น';
+                if (s.completed.length >= 76) tierName = 'Gold';
+                else if (s.completed.length >= 41) tierName = 'Silver';
+                else if (s.completed.length >= 1) tierName = 'Bronze';
+
+                const safePdca = (s.lastPdca || '-').replace(/"/g, '""');
+                csv += `"${s.id}","${s.no || '-'}","${s.name}","${s.room}","${tierName}",${s.xp},${s.completed.length},"${s.clinicAlert ? 'ต้องการความช่วยเหลือ' : 'ปกติ'}","${safePdca}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `HRN_Coding_Report_${roomTag}_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+
+            showCutePopup('📊', 'ส่งออกไฟล์ CSV สำเร็จ!', `ดาวน์โหลดรายงานข้อมูลนักเรียน (${roomFilter === 'ALL' ? 'ทุกห้องเรียน ม.1/1 - ม.1/4' : 'ชั้น ' + roomFilter}) จำนวน ${list.length} คน เรียบร้อยแล้ว`, '', 'เยี่ยมเลย! ✅');
+        }
+
+        function exportToPDF() {
+            const { roomFilter, list } = getFilteredStudentsForExport();
+            if (list.length === 0) {
+                showCutePopup('📭', 'ไม่มีข้อมูลสำหรับสร้าง PDF', `ยังไม่มีรายชื่อนักเรียนในกลุ่ม "${roomFilter === 'ALL' ? 'ทุกห้องเรียน' : roomFilter}" ค่ะ`, '', 'รับทราบ 👍');
+                return;
+            }
+
+            const roomTitle = roomFilter === 'ALL' ? 'ทุกห้องเรียน (ชั้นมัธยมศึกษาปีที่ 1/1 - 1/4)' : `ชั้นมัธยมศึกษาปีที่ ${roomFilter.replace('ม.', '')}`;
+            const dateStr = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
+            const avgXP = Math.round(list.reduce((sum, s) => sum + (s.xp || 0), 0) / list.length);
+            const avgDone = (list.reduce((sum, s) => sum + s.completed.length, 0) / list.length).toFixed(1);
+
+            const rowsHtml = list.map((s, idx) => {
+                let tierLabel = 'เริ่มต้น';
+                let tierStyle = 'color:#64748b;';
+                if (s.completed.length >= 76) { tierLabel = '🏆 Gold'; tierStyle = 'color:#b45309;font-weight:bold;'; }
+                else if (s.completed.length >= 41) { tierLabel = '🥈 Silver'; tierStyle = 'color:#334155;font-weight:bold;'; }
+                else if (s.completed.length >= 1) { tierLabel = '🥉 Bronze'; tierStyle = 'color:#92400e;font-weight:bold;'; }
+
+                return `
+                    <tr>
+                        <td style="text-align:center;">${idx + 1}</td>
+                        <td style="text-align:center;">${s.no || '-'}</td>
+                        <td style="text-align:center;">${s.id}</td>
+                        <td>${s.name}</td>
+                        <td style="text-align:center;">${s.room}</td>
+                        <td style="text-align:center;${tierStyle}">${tierLabel}</td>
+                        <td style="text-align:center;font-weight:bold;">${s.completed.length} / 100</td>
+                        <td style="text-align:center;">${s.xp}</td>
+                        <td style="text-align:center;color:${s.clinicAlert ? '#dc2626' : '#059669'};">${s.clinicAlert ? 'พบจุดติดขัด' : 'ปกติ'}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            const printWindow = window.open('', '_blank', 'width=1000,height=750');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="th">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>รายงานผลการเรียนรู้ HRN SMART CODING - ${roomFilter}</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+                    <style>
+                        @page { size: A4 portrait; margin: 14mm; }
+                        body { font-family: 'Sarabun', sans-serif; color: #1e293b; font-size: 13px; line-height: 1.4; }
+                        .header { text-align: center; border-bottom: 2px solid #8B0000; padding-bottom: 10px; margin-bottom: 14px; }
+                        .header img { width: 58px; height: 58px; object-fit: contain; margin-bottom: 4px; }
+                        .header h1 { font-size: 18px; color: #8B0000; margin: 2px 0; }
+                        .header h2 { font-size: 15px; margin: 2px 0; font-weight: 700; }
+                        .header p { font-size: 12px; color: #475569; margin: 2px 0; }
+                        .summary-box { display: flex; justify-content: space-between; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 8px 14px; margin-bottom: 12px; font-size: 12.5px; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                        th, td { border: 1px solid #cbd5e1; padding: 6px 7px; font-size: 12px; }
+                        th { background-color: #8B0000; color: #ffffff; font-weight: 700; }
+                        tr:nth-child(even) { background-color: #f8fafc; }
+                        .footer-sign { margin-top: 28px; display: flex; justify-content: flex-end; }
+                        .sign-box { text-align: center; width: 260px; font-size: 13px; }
+                        @media print { .no-print { display: none; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="no-print" style="background:#fef08a;padding:10px;text-align:center;margin-bottom:12px;border-radius:6px;font-weight:bold;">
+                        กำลังเปิดหน้าต่างพิมพ์... เลือกปลายทางเป็น "บันทึกเป็น PDF (Save as PDF)" ได้เลยค่ะ 
+                        <button onclick="window.print()" style="margin-left:10px;padding:4px 12px;background:#8B0000;color:#fff;border:none;border-radius:4px;cursor:pointer;">พิมพ์ / บันทึก PDF</button>
+                    </div>
+                    <div class="header">
+                        <img src="https://yt3.googleusercontent.com/BFbVKyC_p3RToa_4YLWgjydWozCp9k-DA6z7hz_rrx5PkAWypLK6P7Lx5DxFdruIQM5ms9hkRw=s900-c-k-c0x00ffffff-no-rj" alt="ตราโรงเรียน">
+                        <h1>โรงเรียนมหาไถ่ศึกษาภาคตะวันออกเฉียงเหนือ</h1>
+                        <h2>รายงานผลการพัฒนาทักษะการคิดเชิงคำนวณ (HRN SMART CODING UP SKILLS)</h2>
+                        <p>รายวิชา วิทยาการคำนวณ • กลุ่มเป้าหมาย: <b>${roomTitle}</b> • ข้อมูล ณ วันที่ ${dateStr}</p>
+                    </div>
+                    <div class="summary-box">
+                        <span><b>จำนวนนักเรียนทั้งหมด:</b> ${list.length} คน</span>
+                        <span><b>ความก้าวหน้าเฉลี่ย:</b> ${avgDone} / 100 ด่าน</span>
+                        <span><b>คะแนนสะสมเฉลี่ย:</b> ${avgXP} XP</span>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:5%;">ที่</th>
+                                <th style="width:6%;">เลขที่</th>
+                                <th style="width:11%;">รหัสนักเรียน</th>
+                                <th style="width:26%;">ชื่อ - นามสกุล</th>
+                                <th style="width:9%;">ห้อง</th>
+                                <th style="width:11%;">ระดับเหรียญ</th>
+                                <th style="width:11%;">ด่านที่ผ่าน</th>
+                                <th style="width:9%;">XP</th>
+                                <th style="width:12%;">สถานะคลินิก</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHtml}
+                        </tbody>
+                    </table>
+                    <div class="footer-sign">
+                        <div class="sign-box">
+                            <p>ลงชื่อ..........................................................ผู้สอน</p>
+                            <p>(นางสาวกัญณภัทร ใจเพียร)</p>
+                            <p>ครูผู้สอนรายวิชาวิทยาการคำนวณ</p>
+                        </div>
+                    </div>
+                    <script>
+                        window.onload = function() { setTimeout(function() { window.print(); }, 500); };
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+
+        function saveGasUrl() {
+            gasWebAppUrl = document.getElementById('gasUrlInput').value.trim();
+            localStorage.setItem('hrn_gas_url', gasWebAppUrl);
+            updateSyncBadge();
+            closeModal('configModal');
+            showCutePopup('☁️', 'บันทึกการตั้งค่าแล้ว', gasWebAppUrl ? 'เชื่อมต่อฐานข้อมูล Google Sheets เรียบร้อยแล้ว!' : 'เปลี่ยนเป็นโหมดออฟไลน์ (Local Storage)', '', 'เยี่ยมเลย! ✅');
+        }
+
+        function updateSyncBadge() {
+            const statusText = document.getElementById('syncStatusText');
+            const landingBadge = document.getElementById('landingDbBadge');
+            if (gasWebAppUrl) {
+                statusText.innerText = 'เชื่อมต่อ Sheets แล้ว';
+                if (landingBadge) {
+                    landingBadge.innerText = 'ออนไลน์ (Google Sheets Sync)';
+                    landingBadge.className = 'font-bold text-sm text-emerald-600';
+                }
+            } else {
+                statusText.innerText = 'เชื่อมต่อ Sheets';
+                if (landingBadge) {
+                    landingBadge.innerText = 'โหมดออฟไลน์ (Local Storage)';
+                    landingBadge.className = 'font-bold text-sm text-amber-600';
+                }
+            }
+        }
+
+        function openConfigModal() {
+            document.getElementById('configModal').classList.remove('hidden');
+        }
+    </script>
+    <script>
+        // --- CUTE CLICK SPARKLE & POP SOUND ---
+        const CLICK_EMOJIS = ['✨', '⭐', '💖', '🚀', '🤖', '💡', '🎉', '💫'];
+
+        document.addEventListener('click', (e) => {
+            // สร้างประกายอิโมจิกระจาย 5 ชิ้นรอบจุดที่คลิก
+            for (let i = 0; i < 5; i++) {
+                const sparkle = document.createElement('span');
+                sparkle.className = 'click-sparkle';
+                sparkle.innerText = CLICK_EMOJIS[Math.floor(Math.random() * CLICK_EMOJIS.length)];
+                
+                // คำนวณทิศทางการกระจายแบบสุ่ม
+                const angle = (Math.PI * 2 * i) / 5 + (Math.random() * 0.5);
+                const distance = 35 + Math.random() * 35;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance - 15; // ลอยขึ้นด้านบนเล็กน้อย
+                const rot = (Math.random() - 0.5) * 90;
+
+                sparkle.style.left = e.clientX + 'px';
+                sparkle.style.top = e.clientY + 'px';
+                sparkle.style.setProperty('--tx', `${tx}px`);
+                sparkle.style.setProperty('--ty', `${ty}px`);
+                sparkle.style.setProperty('--rot', `${rot}deg`);
+
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 750);
+            }
+
+            // เล่นเสียงปิ๊งเบาๆ เฉพาะตอนคลิกปุ่มหรือบล็อกคำสั่ง
+            if (e.target.closest('button, .block-item')) {
+                playCutePopSound();
+            }
+        });
+
+        function playCutePopSound() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(580, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.06, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.08);
+            } catch (err) {}
+        }
+
+    </script>
+</body>
+</html>
